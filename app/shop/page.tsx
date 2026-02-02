@@ -23,7 +23,7 @@ type InventoryItem = {
   price: number;
   power: "solar" | "battery" | "electric";
   status: "available" | "sold";
-  image: string;
+  images: string[];
   dimensions: string;
   wood: string;
 };
@@ -127,38 +127,48 @@ function InventoryCard({
   sold?: boolean;
 }) {
   const PowerIcon = powerIcons[item.power as keyof typeof powerIcons];
+  const imageCount = item.images.length;
 
   return (
     <Card className={`overflow-hidden ${sold ? "opacity-75" : ""}`}>
-      <div className="relative aspect-square bg-muted">
-        <Image
-          src={item.image}
-          alt={item.name}
-          fill
-          className={`object-cover ${sold ? "grayscale" : ""}`}
-        />
-        {sold && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black/50">
-            <Badge variant="secondary" className="text-lg px-4 py-2">
-              Sold
-            </Badge>
-          </div>
-        )}
-        {!sold && (
-          <Badge className="absolute top-3 right-3 bg-green-600">
-            Available
-          </Badge>
-        )}
-      </div>
-      <div className="p-5">
-        <div className="flex items-start justify-between mb-2">
-          <h3 className="font-semibold text-lg">{item.name}</h3>
+      <Link href={`/shop/${item.id}`}>
+        <div className="relative aspect-square bg-muted group">
+          <Image
+            src={item.images[0]}
+            alt={item.name}
+            fill
+            className={`object-cover transition-transform group-hover:scale-105 ${sold ? "grayscale" : ""}`}
+          />
+          {sold && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black/50">
+              <Badge variant="secondary" className="text-lg px-4 py-2">
+                Sold
+              </Badge>
+            </div>
+          )}
           {!sold && (
-            <span className="text-xl font-bold">
-              ${item.price.toLocaleString()}
-            </span>
+            <Badge className="absolute top-3 right-3 bg-green-600">
+              Available
+            </Badge>
+          )}
+          {imageCount > 1 && (
+            <div className="absolute bottom-3 right-3 bg-black/60 text-white text-xs px-2 py-1 rounded">
+              +{imageCount - 1} more
+            </div>
           )}
         </div>
+      </Link>
+      <div className="p-5">
+        <Link href={`/shop/${item.id}`}>
+          <div className="flex items-start justify-between mb-2">
+            <h3 className="font-semibold text-lg hover:underline">{item.name}</h3>
+            {!sold && (
+              <span className="text-xl font-bold">
+                ${item.price.toLocaleString()}
+              </span>
+            )}
+          </div>
+        </Link>
         <p className="text-sm text-muted-foreground mb-4">{item.description}</p>
         <div className="space-y-2 text-sm">
           <div className="flex items-center gap-2 text-muted-foreground">
@@ -174,7 +184,7 @@ function InventoryCard({
         </div>
         {!sold && (
           <Button asChild className="w-full mt-4">
-            <Link href={`/contact?item=${item.id}`}>Inquire About This Post</Link>
+            <Link href={`/shop/${item.id}`}>View Details</Link>
           </Button>
         )}
       </div>

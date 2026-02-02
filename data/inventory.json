@@ -7,7 +7,7 @@
       "price": 2400,
       "power": "solar",
       "status": "available",
-      "image": "/IMG_5638.jpg",
+      "images": ["/IMG_5638.jpg", "/IMG_5639.jpg"],
       "dimensions": "11\" × 11\" × 11'",
       "wood": "Western Red Cedar"
     },
@@ -18,7 +18,7 @@
       "price": 2800,
       "power": "electric",
       "status": "available",
-      "image": "/IMG_5639.jpg",
+      "images": ["/IMG_5639.jpg", "/IMG_5638.jpg"],
       "dimensions": "11\" × 11\" × 11'",
       "wood": "White Oak"
     },
@@ -29,7 +29,7 @@
       "price": 2200,
       "power": "battery",
       "status": "sold",
-      "image": "/IMG_5638.jpg",
+      "images": ["/IMG_5638.jpg"],
       "dimensions": "11\" × 11\" × 11'",
       "wood": "Southern Yellow Pine"
     }
