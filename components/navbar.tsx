@@ -95,6 +95,15 @@ export function NavigationMenuMain() {
                   asChild
                   className={navigationMenuTriggerStyle()}
                 >
+                  <Link href="/shop">Shop</Link>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+
+              <NavigationMenuItem>
+                <NavigationMenuLink
+                  asChild
+                  className={navigationMenuTriggerStyle()}
+                >
                   <Link href="/gallery">Gallery</Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>
@@ -123,6 +132,13 @@ export function NavigationMenuMain() {
           <div className="container mx-auto px-4 py-6 flex flex-col gap-4">
             <MobileSection title="Products" items={products} />
             <MobileSection title="Company" items={company} />
+            <Link
+              href="/shop"
+              className="font-medium py-2"
+              onClick={() => setMobileOpen(false)}
+            >
+              Shop
+            </Link>
             <Link
               href="/gallery"
               className="font-medium py-2"

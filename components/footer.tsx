@@ -3,9 +3,9 @@ import { Logo } from "./ui/logo";
 
 const footerLinks = {
   products: [
-    { label: "Light Posts", href: "/gallery" },
+    { label: "Shop", href: "/shop" },
+    { label: "Gallery", href: "/gallery" },
     { label: "Custom Orders", href: "/contact" },
-    { label: "Pricing", href: "/gallery#pricing" },
   ],
   company: [
     { label: "About Us", href: "/about" },
