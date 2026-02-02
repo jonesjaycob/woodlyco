@@ -172,14 +172,14 @@ export default async function BlogPostPage({
           {/* Back link */}
           <Link
             href="/blog"
-            className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground mb-6"
+            className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground mb-6 bg-background p-2 rounded-md"
           >
             <ArrowLeftIcon className="w-4 h-4" />
             Back to Blog
           </Link>
 
           {/* Post header */}
-          <Badge variant="secondary" className="mb-4">
+          <Badge variant="secondary" className="mb-4 p-2">
             {post.category}
           </Badge>
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
