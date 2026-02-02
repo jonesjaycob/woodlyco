@@ -78,7 +78,7 @@ export default function AboutPage() {
       <PageHeader
         title="About Woodly"
         subtitle="Our Story"
-        description="We're a small team of woodworkers who believe outdoor lighting should be as beautiful as it is functional."
+        description="What started with one tree too special for firewood became a mission to bring handcrafted beauty to every driveway."
       />
 
       {/* Story Section */}
@@ -86,30 +86,37 @@ export default function AboutPage() {
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>
             <h2 className="text-2xl md:text-4xl font-bold mb-6">
-              Born from a Love of Timber
+              It Started with a Tree
             </h2>
             <div className="space-y-4 text-muted-foreground">
               <p>
-                Woodly Company started with a simple observation: most outdoor
-                light posts are mass-produced, flimsy, and forgettable. We knew
-                we could do better.
+                One day, I had to cut down a large tree in my yard — it was 
+                growing too close to the house. But I couldn't bring myself to 
+                turn this old tree into firewood. It deserved better than that.
               </p>
               <p>
-                Drawing on years of timber framing experience, we set out to
-                create light posts that are built the way structures used to be
-                built — with real joinery, quality materials, and pride in the
-                craft.
+                So I decided to mill it out by hand with my chainsaw. The wood 
+                had so much character — years of growth rings, natural grain 
+                patterns, a story in every inch. I thought: why not create 
+                something amazing out of this?
               </p>
               <p>
-                Today, every Woodly light post is handcrafted in our workshop
-                using the same techniques that have held timber frame buildings
-                together for centuries.
+                As I worked, neighbors would stop by wondering what I was building. 
+                When I finally got that first post up, it turned out more beautiful 
+                than I imagined. That's when it hit me — I wanted others to 
+                experience this same feeling.
+              </p>
+              <p>
+                I searched everywhere and couldn't find anything like it. So I 
+                designed my own in CAD and started building them. That's how 
+                Woodly Company was born — from one tree that was too special 
+                to become firewood.
               </p>
             </div>
           </div>
           <PlaceholderImage
             aspectRatio="square"
-            label="Workshop photo"
+            label="The original tree / first light post"
             className="w-full"
           />
         </div>
