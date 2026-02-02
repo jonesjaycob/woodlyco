@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { SunIcon, BatteryIcon, ZapIcon } from "lucide-react";
+import inventoryData from "@/data/inventory.json";
 
 export const metadata: Metadata = {
   title: "Shop",
@@ -15,45 +16,19 @@ export const metadata: Metadata = {
     "Browse available wooden light posts ready to ship. Handcrafted timber frame light posts in stock now.",
 };
 
-// Inventory items - these would typically come from a database or CMS
-const inventory = [
-  {
-    id: "lp-001",
-    name: "Classic Cedar Post",
-    description:
-      "Traditional design in aromatic cedar. Beautiful natural grain with warm reddish tones.",
-    price: 2400,
-    power: "solar",
-    status: "available",
-    image: "/IMG_5638.jpg",
-    dimensions: '11" × 11" × 11\'',
-    wood: "Western Red Cedar",
-  },
-  {
-    id: "lp-002",
-    name: "Rustic Oak Post",
-    description:
-      "Stunning white oak with prominent grain patterns. Built to last generations.",
-    price: 2800,
-    power: "electric",
-    status: "available",
-    image: "/IMG_5639.jpg",
-    dimensions: '11" × 11" × 11\'',
-    wood: "White Oak",
-  },
-  {
-    id: "lp-003",
-    name: "Natural Pine Post",
-    description:
-      "Classic southern yellow pine with character knots. Excellent value without compromising quality.",
-    price: 2200,
-    power: "battery",
-    status: "sold",
-    image: "/IMG_5638.jpg",
-    dimensions: '11" × 11" × 11\'',
-    wood: "Southern Yellow Pine",
-  },
-];
+type InventoryItem = {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  power: "solar" | "battery" | "electric";
+  status: "available" | "sold";
+  image: string;
+  dimensions: string;
+  wood: string;
+};
+
+const inventory: InventoryItem[] = inventoryData.items;
 
 const powerIcons = {
   solar: SunIcon,
