@@ -50,7 +50,7 @@ const faqs = [
   {
     question: "What type of wood do you use?",
     answer:
-      "We use high-quality, high-character timber selected for durability and beauty. Specific wood species can be discussed during your consultation based on your preferences and budget.",
+      "Most of our posts are built from pine — it's durable, takes stain beautifully, and offers great value. Other wood species can be discussed during your consultation if you have specific preferences.",
   },
   {
     question: "Can I customize the design?",
