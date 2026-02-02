@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import Marking from "./marking";
 
 interface SectionProps {
   children: React.ReactNode;
@@ -38,7 +39,8 @@ interface SectionHeaderProps {
   subtitle?: string;
   description?: string;
   align?: "left" | "center" | "right";
-  markingPosition?: "left" | "right" | "none";
+  marking?: "left" | "right" | "none";
+  markingStroke?: string;
 }
 
 export function SectionHeader({
@@ -46,7 +48,8 @@ export function SectionHeader({
   subtitle,
   description,
   align = "left",
-  markingPosition = "none",
+  marking = "left",
+  markingStroke = "currentColor",
 }: SectionHeaderProps) {
   const alignClass = {
     left: "text-left",
@@ -56,7 +59,17 @@ export function SectionHeader({
 
   return (
     <div className={cn("max-w-2xl mb-12", alignClass)}>
-      <h2 className="uppercase text-3xl md:text-5xl font-bold relative">
+      <h2 className="uppercase text-3xl md:text-5xl font-bold relative inline-block">
+        {marking === "left" && (
+          <span className="absolute -top-6 -left-8 md:-top-8 md:-left-10">
+            <Marking orientation="left" stroke={markingStroke} />
+          </span>
+        )}
+        {marking === "right" && (
+          <span className="absolute -top-6 -right-8 md:-top-8 md:-right-10">
+            <Marking orientation="right" stroke={markingStroke} />
+          </span>
+        )}
         {title}
         {subtitle && (
           <>

@@ -156,6 +156,8 @@ export default function Home() {
           title="Why Woodly?"
           description="Every light post we create is a testament to traditional craftsmanship and modern durability."
           align="center"
+          marking="left"
+          markingStroke="black"
         />
         <div className="grid md:grid-cols-3 gap-8">
           {features.map((feature) => (
@@ -179,6 +181,8 @@ export default function Home() {
           subtitle="Flexibility for any installation"
           description="Whether you want sustainable solar, versatile battery, or reliable electric — we've got you covered."
           align="center"
+          marking="right"
+          markingStroke="white"
         />
         <div className="grid md:grid-cols-3 gap-8">
           {powerOptions.map((option) => (

@@ -120,6 +120,8 @@ export default function AboutPage() {
         <SectionHeader
           title="What We Stand For"
           align="center"
+          marking="left"
+          markingStroke="black"
         />
         <div className="grid md:grid-cols-3 gap-8">
           {values.map((value) => (
@@ -137,6 +139,8 @@ export default function AboutPage() {
           title="Our Process"
           subtitle="From tree to light post"
           description="Every Woodly light post goes through a careful six-step process to ensure quality and longevity."
+          marking="right"
+          markingStroke="white"
         />
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {processSteps.map((step) => (

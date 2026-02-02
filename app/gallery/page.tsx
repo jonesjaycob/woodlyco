@@ -133,6 +133,8 @@ export default function GalleryPage() {
           title="Pricing"
           description="Transparent pricing for quality craftsmanship. Every post is made to order."
           align="center"
+          marking="left"
+          markingStroke="black"
         />
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {pricingTiers.map((tier) => (
@@ -145,15 +147,15 @@ export default function GalleryPage() {
               }`}
             >
               <div className="mb-6">
-                <h3 className="text-2xl font-bold">{tier.name}</h3>
-                <p className="text-muted-foreground">{tier.size}</p>
+                <h3 className="text-2xl font-bold text-gray-900">{tier.name}</h3>
+                <p className="text-gray-600">{tier.size}</p>
               </div>
-              <p className="text-3xl font-bold mb-6">{tier.price}</p>
+              <p className="text-3xl font-bold mb-6 text-gray-900">{tier.price}</p>
               <ul className="space-y-3 mb-8">
                 {tier.features.map((feature) => (
                   <li key={feature} className="flex items-start gap-2">
                     <span className="text-green-600 mt-0.5">✓</span>
-                    <span className="text-sm">{feature}</span>
+                    <span className="text-sm text-gray-700">{feature}</span>
                   </li>
                 ))}
               </ul>
@@ -161,7 +163,7 @@ export default function GalleryPage() {
                 className={`w-full ${
                   tier.featured
                     ? "bg-black text-white hover:bg-gray-800"
-                    : ""
+                    : "border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white"
                 }`}
                 variant={tier.featured ? "default" : "outline"}
                 asChild
