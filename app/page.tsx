@@ -62,13 +62,14 @@ export default function Home() {
           style={{ width: videoWidth, height: videoWidth }}
         >
           <video
-            src="/IMG_5555.mov"
             autoPlay
             loop
             muted
             playsInline
             className="absolute bottom-0 left-0 w-full p-2 h-full object-cover opacity-15"
-          />
+          >
+            <source src="/hero-video.mp4" type="video/mp4" />
+          </video>
           <div
             className="
               absolute right-70 overflow-clip opacity-10
