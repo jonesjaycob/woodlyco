@@ -108,6 +108,15 @@ export function NavigationMenuMain() {
                   <Link href="/gallery">Gallery</Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>
+
+              <NavigationMenuItem>
+                <NavigationMenuLink
+                  asChild
+                  className={navigationMenuTriggerStyle()}
+                >
+                  <Link href="/blog">Blog</Link>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
 
@@ -147,6 +156,13 @@ export function NavigationMenuMain() {
               onClick={() => setMobileOpen(false)}
             >
               Gallery
+            </Link>
+            <Link
+              href="/blog"
+              className="font-medium py-2"
+              onClick={() => setMobileOpen(false)}
+            >
+              Blog
             </Link>
             <div className="flex items-center justify-between mt-4">
               <ThemeToggle />

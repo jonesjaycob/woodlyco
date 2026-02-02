@@ -13,6 +13,7 @@ const footerLinks = {
     { label: "Contact", href: "/contact" },
   ],
   resources: [
+    { label: "Blog", href: "/blog" },
     { label: "Care Guide", href: "/care" },
     { label: "FAQ", href: "/faq" },
     { label: "Delivery", href: "/shipping" },
