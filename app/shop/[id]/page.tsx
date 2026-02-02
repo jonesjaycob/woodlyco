@@ -180,7 +180,7 @@ export default async function ProductPage({
 
       {/* Related / Other items */}
       <Section dark>
-        <h2 className="text-2xl font-bold mb-6 text-gray-900">More Light Posts</h2>
+        <h2 className="text-2xl font-bold mb-6">More Light Posts</h2>
         <div className="flex gap-4 overflow-x-auto pb-4">
           {inventory
             .filter((i) => i.id !== item.id)

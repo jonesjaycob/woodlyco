@@ -65,15 +65,15 @@ export default function ShippingPage() {
         <SectionHeader
           title="Why We Deliver"
           marking="left"
-          markingStroke="black"
+          markingStroke="currentColor"
         />
         <div className="max-w-2xl">
-          <p className="text-gray-700 mb-4">
+          <p className="text-muted-foreground mb-4">
             At 11 feet tall and built from solid timber, our light posts are
             substantial pieces. We use our own trailer to deliver locally
             because we want to ensure your post arrives in perfect condition.
           </p>
-          <p className="text-gray-700">
+          <p className="text-muted-foreground">
             Delivery cost depends on your location. We'll provide a complete
             quote including delivery when you contact us about your project.
           </p>

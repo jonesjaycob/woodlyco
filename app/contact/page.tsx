@@ -101,15 +101,11 @@ export default function ContactPage() {
       {/* FAQ Teaser */}
       <Section dark className="text-center">
         <h2 className="text-2xl font-bold mb-4">Have Questions?</h2>
-        <p className="text-gray-600 max-w-xl mx-auto mb-6">
+        <p className="text-muted-foreground max-w-xl mx-auto mb-6">
           Check out our frequently asked questions about ordering, customization,
           shipping, and installation.
         </p>
-        <Button
-          variant="outline"
-          className="border-black text-black hover:bg-black hover:text-white"
-          asChild
-        >
+        <Button variant="secondary" asChild>
           <Link href="/faq">View FAQ</Link>
         </Button>
       </Section>

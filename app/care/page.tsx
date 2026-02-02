@@ -81,15 +81,15 @@ export default function CarePage() {
           title="Staining Tips"
           description="Get the best results with your annual stain application."
           marking="left"
-          markingStroke="black"
+          markingStroke="currentColor"
         />
         <div className="grid md:grid-cols-2 gap-4">
           {stainTips.map((tip, index) => (
             <div key={index} className="flex items-start gap-3">
-              <span className="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center text-sm flex-shrink-0">
+              <span className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm flex-shrink-0">
                 {index + 1}
               </span>
-              <p className="text-gray-700">{tip}</p>
+              <p className="text-muted-foreground">{tip}</p>
             </div>
           ))}
         </div>

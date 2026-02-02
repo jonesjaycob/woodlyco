@@ -87,7 +87,7 @@ export default function Home() {
             <div className="w-full md:w-1/2">
               <h1 className="uppercase text-4xl md:text-7xl relative">
                 <span className="absolute -top-10 -left-10">
-                  <Marking orientation="left" stroke="white" />
+                  <Marking orientation="left" stroke="currentColor" />
                 </span>
                 Custom Wooden Light Posts
                 <br />
@@ -130,7 +130,7 @@ export default function Home() {
           <div className="relative z-10 flex flex-col gap-8 p-8 md:p-16 text-center">
             <h2 className="uppercase text-4xl md:text-6xl relative mx-auto">
               <span className="absolute -top-10 right-0 md:right-10">
-                <Marking orientation="right" stroke="white" />
+                <Marking orientation="right" stroke="currentColor" />
               </span>
               Handcrafted Timber Frame
             </h2>
@@ -158,15 +158,15 @@ export default function Home() {
           description="Every light post we create is a testament to traditional craftsmanship and modern durability."
           align="center"
           marking="left"
-          markingStroke="black"
+          markingStroke="currentColor"
         />
         <div className="grid md:grid-cols-3 gap-8">
           {features.map((feature) => (
-            <Card key={feature.title} className="p-6 bg-gray-50">
-              <div className="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center mb-4">
+            <Card key={feature.title} className="p-6 bg-card border-border">
+              <div className="w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center mb-4">
                 <CheckIcon className="w-5 h-5" />
               </div>
-              <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
+              <h3 className="text-lg font-semibold text-card-foreground mb-2">{feature.title}</h3>
               <p className="text-muted-foreground text-sm">
                 {feature.description}
               </p>
@@ -183,7 +183,7 @@ export default function Home() {
           description="Whether you want sustainable solar, versatile battery, or reliable electric — we've got you covered."
           align="center"
           marking="right"
-          markingStroke="white"
+          markingStroke="currentColor"
         />
         <div className="grid md:grid-cols-3 gap-8">
           {powerOptions.map((option) => (
@@ -216,12 +216,12 @@ export default function Home() {
             <h2 className="uppercase text-3xl md:text-5xl mb-6">
               See Our Work
             </h2>
-            <p className="text-gray-600 mb-6">
+            <p className="text-muted-foreground mb-6">
               Each Woodly light post is unique — shaped by the character of the
               timber and the vision of our clients. Browse our gallery to see
               completed installations and find inspiration for your project.
             </p>
-            <Button size="lg" variant="outline" className="text-black border-black hover:bg-black hover:text-white" asChild>
+            <Button size="lg" variant="secondary" asChild>
               <Link href="/gallery">View Full Gallery</Link>
             </Button>
           </div>

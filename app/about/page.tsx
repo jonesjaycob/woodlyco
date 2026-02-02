@@ -121,13 +121,13 @@ export default function AboutPage() {
           title="What We Stand For"
           align="center"
           marking="left"
-          markingStroke="black"
+          markingStroke="currentColor"
         />
         <div className="grid md:grid-cols-3 gap-8">
           {values.map((value) => (
             <div key={value.title} className="text-center">
               <h3 className="text-xl font-semibold mb-3">{value.title}</h3>
-              <p className="text-gray-600">{value.description}</p>
+              <p className="text-muted-foreground">{value.description}</p>
             </div>
           ))}
         </div>
@@ -140,7 +140,7 @@ export default function AboutPage() {
           subtitle="From tree to light post"
           description="Every Woodly light post goes through a careful six-step process to ensure quality and longevity."
           marking="right"
-          markingStroke="white"
+          markingStroke="currentColor"
         />
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {processSteps.map((step) => (
@@ -164,11 +164,11 @@ export default function AboutPage() {
         <h2 className="text-3xl md:text-4xl font-bold mb-4">
           Ready to Work With Us?
         </h2>
-        <p className="text-gray-600 max-w-xl mx-auto mb-8">
+        <p className="text-muted-foreground max-w-xl mx-auto mb-8">
           We'd love to hear about your project. Reach out and let's create
           something beautiful together.
         </p>
-        <Button size="lg" className="bg-black text-white hover:bg-gray-800" asChild>
+        <Button size="lg" asChild>
           <Link href="/contact">Get in Touch</Link>
         </Button>
       </Section>

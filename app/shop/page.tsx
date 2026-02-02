@@ -74,8 +74,8 @@ export default function ShopPage() {
       {/* Recently Sold */}
       {soldItems.length > 0 && (
         <Section dark>
-          <h2 className="text-2xl font-bold mb-4 text-gray-900">Recently Sold</h2>
-          <p className="text-gray-600 mb-8">
+          <h2 className="text-2xl font-bold mb-4">Recently Sold</h2>
+          <p className="text-muted-foreground mb-8">
             These posts found their homes. Interested in something similar?
           </p>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
