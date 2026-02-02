@@ -2,7 +2,12 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  AnimatePresence,
+} from "framer-motion";
 import { NavigationMenuMain } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Section, SectionHeader } from "@/components/ui/section";
@@ -33,17 +38,20 @@ const powerOptions = [
   {
     icon: SunIcon,
     title: "Solar Powered",
-    description: "Eco-friendly, zero electricity costs, automatic dusk-to-dawn operation.",
+    description:
+      "Eco-friendly, zero electricity costs, automatic dusk-to-dawn operation.",
   },
   {
     icon: BatteryIcon,
     title: "Battery Operated",
-    description: "Flexible placement anywhere on your property, easy maintenance.",
+    description:
+      "Flexible placement anywhere on your property, easy maintenance.",
   },
   {
     icon: ZapIcon,
     title: "Electric Wired",
-    description: "Consistent brightness, integrate with existing landscape lighting.",
+    description:
+      "Consistent brightness, integrate with existing landscape lighting.",
   },
 ];
 
@@ -56,7 +64,7 @@ export default function Home() {
       {/* Hero Section */}
       <div className="relative h-screen">
         <NavigationMenuMain />
-        
+
         <motion.div
           className="relative mx-auto overflow-clip"
           style={{ width: videoWidth, height: videoWidth }}
@@ -86,18 +94,18 @@ export default function Home() {
           <div className="container mx-auto h-full flex flex-col md:flex-row items-end py-24 px-4 md:px-12 gap-10">
             <div className="w-full md:w-1/2">
               <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="uppercase text-4xl md:text-7xl relative"
-          >
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                className="uppercase text-4xl md:text-7xl relative"
+              >
                 <span className="absolute -top-10 -left-10">
                   <Marking orientation="left" stroke="currentColor" />
                 </span>
                 Custom Wooden Light Posts
                 <br />
                 <span className="text-sm">Handcrafted by Woodly Co.</span>
-              </h1>
+              </motion.h1>
             </div>
             <div className="w-full md:w-1/2 flex flex-col gap-5">
               <p>
@@ -171,7 +179,9 @@ export default function Home() {
               <div className="w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center mb-4">
                 <CheckIcon className="w-5 h-5" />
               </div>
-              <h3 className="text-lg font-semibold text-card-foreground mb-2">{feature.title}</h3>
+              <h3 className="text-lg font-semibold text-card-foreground mb-2">
+                {feature.title}
+              </h3>
               <p className="text-muted-foreground text-sm">
                 {feature.description}
               </p>
