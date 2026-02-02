@@ -164,6 +164,9 @@ export default async function BlogPostPage({
           fill
           className="object-cover"
         />
+        {/* Top gradient for navigation readability */}
+        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/60 to-transparent" />
+        {/* Bottom gradient for content */}
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
       </div>
 

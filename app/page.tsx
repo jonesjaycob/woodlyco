@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { NavigationMenuMain } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Section, SectionHeader } from "@/components/ui/section";
@@ -85,7 +85,12 @@ export default function Home() {
         <div className="absolute bottom-0 h-2/3 w-full">
           <div className="container mx-auto h-full flex flex-col md:flex-row items-end py-24 px-4 md:px-12 gap-10">
             <div className="w-full md:w-1/2">
-              <h1 className="uppercase text-4xl md:text-7xl relative">
+              <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="uppercase text-4xl md:text-7xl relative"
+          >
                 <span className="absolute -top-10 -left-10">
                   <Marking orientation="left" stroke="currentColor" />
                 </span>
