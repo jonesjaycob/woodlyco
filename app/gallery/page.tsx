@@ -58,7 +58,7 @@ const pricingTiers = [
   {
     name: "Standard",
     size: '11"×11"×11\'',
-    price: "Starting at $2,400",
+    price: "Starting at $4,200",
     features: [
       "Premium timber construction",
       "Traditional mortise & tenon joinery",

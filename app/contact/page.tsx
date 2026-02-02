@@ -19,13 +19,13 @@ const contactMethods = [
   {
     icon: PhoneIcon,
     label: "Phone",
-    value: "(555) 123-4567",
-    href: "tel:+15551234567",
+    value: "(775) 848-8609",
+    href: "tel:+17758488609",
   },
   {
     icon: MapPinIcon,
     label: "Workshop",
-    value: "Portland, Oregon",
+    value: "Pell City, Alabama",
     href: null,
   },
 ];

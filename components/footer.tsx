@@ -15,7 +15,7 @@ const footerLinks = {
   resources: [
     { label: "Care Guide", href: "/care" },
     { label: "FAQ", href: "/faq" },
-    { label: "Shipping", href: "/shipping" },
+    { label: "Delivery", href: "/shipping" },
   ],
 };
 
