@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Logo } from "./ui/logo";
 import { Button } from "./ui/button";
+import { ThemeToggle } from "./theme-toggle";
 
 const products = [
   {
@@ -110,6 +111,7 @@ export function NavigationMenuMain() {
             </NavigationMenuList>
           </NavigationMenu>
 
+          <ThemeToggle />
           <Button asChild>
             <Link href="/contact">Get a Quote</Link>
           </Button>
@@ -146,9 +148,12 @@ export function NavigationMenuMain() {
             >
               Gallery
             </Link>
-            <Button asChild className="mt-4">
-              <Link href="/contact">Get a Quote</Link>
-            </Button>
+            <div className="flex items-center justify-between mt-4">
+              <ThemeToggle />
+              <Button asChild>
+                <Link href="/contact">Get a Quote</Link>
+              </Button>
+            </div>
           </div>
         </div>
       )}
