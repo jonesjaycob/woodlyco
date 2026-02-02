@@ -28,7 +28,7 @@ type InventoryItem = {
   wood: string;
 };
 
-const inventory: InventoryItem[] = inventoryData.items;
+const inventory = inventoryData.items as InventoryItem[];
 
 const powerIcons = {
   solar: SunIcon,
