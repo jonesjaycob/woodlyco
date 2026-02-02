@@ -3,10 +3,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { NavigationMenuMain } from "@/components/navbar";
 import { Section } from "@/components/ui/section";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { ProductGallery } from "@/components/product-gallery";
+import { ProductInquiryCta } from "@/components/product-inquiry-cta";
 import { SunIcon, BatteryIcon, ZapIcon, ArrowLeftIcon } from "lucide-react";
 import inventoryData from "@/data/inventory.json";
 
@@ -169,27 +169,11 @@ export default async function ProductPage({
             </Card>
 
             {/* CTA */}
-            {!isSold ? (
-              <div className="space-y-4">
-                <Button asChild size="lg" className="w-full">
-                  <Link href={`/contact?item=${item.id}`}>
-                    Inquire About This Post
-                  </Link>
-                </Button>
-                <p className="text-sm text-muted-foreground text-center">
-                  We'll reach out within 1-2 business days to discuss delivery options.
-                </p>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                <p className="text-muted-foreground">
-                  This post has found its home. Interested in something similar?
-                </p>
-                <Button asChild variant="outline" size="lg" className="w-full">
-                  <Link href="/contact">Request a Custom Order</Link>
-                </Button>
-              </div>
-            )}
+            <ProductInquiryCta
+              productId={item.id}
+              productName={item.name}
+              isSold={isSold}
+            />
           </div>
         </div>
       </Section>
