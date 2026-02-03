@@ -9,6 +9,12 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeftIcon } from "lucide-react";
 import blogData from "@/content/blog/posts.json";
 
+// Revalidate every 60 seconds - picks up new posts without full rebuild
+export const revalidate = 60;
+
+// Allow dynamic params for new posts added after build
+export const dynamicParams = true;
+
 type BlogPost = {
   slug: string;
   title: string;

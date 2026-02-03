@@ -8,6 +8,9 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import blogData from "@/content/blog/posts.json";
 
+// Revalidate every 60 seconds - picks up new posts without full rebuild
+export const revalidate = 60;
+
 export const metadata: Metadata = {
   title: "Blog",
   description:
