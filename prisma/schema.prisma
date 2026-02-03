@@ -1,0 +1,37 @@
+// This is your Prisma schema file
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Customer {
+  id        Int     @id @default(autoincrement())
+  name      String
+  email     String  @unique
+  createdAt DateTime @default(now())
+  quotes    Quote[]
+}
+
+model Quote {
+  id        Int      @id @default(autoincrement())
+  customer  Customer? @relation(fields: [customerId], references: [id])
+  customerId Int?
+  total     Float
+  date      DateTime @default(now())
+  lineItems LineItem[]
+}
+
+model LineItem {
+  id       Int    @id @default(autoincrement())
+  quote    Quote? @relation(fields: [quoteId], references: [id])
+  quoteId  Int?
+  description String
+  amount   Float
+  quantity Int
+  total    Float @computed("amount * quantity")
+}
