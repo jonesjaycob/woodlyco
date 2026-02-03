@@ -76,7 +76,10 @@ export default function Home() {
             playsInline
             className="absolute bottom-0 left-0 w-full p-2 h-full object-cover opacity-15"
           >
-            <source src="/hero-video.mp4" type="video/mp4" />
+            <source
+              src="/40732334-B959-4D98-9E70-4C09F6CE4A57-video.MP4"
+              type="video/mp4"
+            />
           </video>
           <div
             className="

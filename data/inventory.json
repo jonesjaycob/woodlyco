@@ -1,21 +1,10 @@
 {
   "items": [
     {
-      "id": "lp-001",
-      "name": "Classic Cedar Post",
-      "description": "Traditional design in aromatic cedar. Beautiful natural grain with warm reddish tones.",
-      "price": 2400,
-      "power": "solar",
-      "status": "available",
-      "images": ["/IMG_5638.jpg", "/IMG_5639.jpg"],
-      "dimensions": "11\" × 11\" × 11'",
-      "wood": "Western Red Cedar"
-    },
-    {
       "id": "lp-002",
       "name": "Rustic Oak Post",
       "description": "Stunning white oak with prominent grain patterns. Built to last generations.",
-      "price": 2800,
+      "price": 4200,
       "power": "electric",
       "status": "available",
       "images": ["/IMG_5639.jpg", "/IMG_5638.jpg"],
@@ -26,10 +15,10 @@
       "id": "lp-003",
       "name": "Natural Pine Post",
       "description": "Classic southern yellow pine with character knots. Excellent value without compromising quality.",
-      "price": 2200,
-      "power": "battery",
+      "price": 4200,
+      "power": "solar",
       "status": "sold",
-      "images": ["/IMG_5638.jpg"],
+      "images": ["/IMG_4942.jpeg"],
       "dimensions": "11\" × 11\" × 11'",
       "wood": "Southern Yellow Pine"
     }
