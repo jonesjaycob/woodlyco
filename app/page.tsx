@@ -88,7 +88,7 @@ export default function Home() {
               bg-[radial-gradient(#fefce8_0%,#fde68a_10%,#fbbf24_20%,transparent_50%)]
             "
           />
-          <div className="absolute right-0 overflow-clip h-full p-10">
+          <div className="absolute right-0 overflow-clip h-full p-10 opacity-45">
             <LightPost1 stroke="#666666" />
           </div>
         </motion.div>
