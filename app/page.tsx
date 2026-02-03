@@ -222,13 +222,15 @@ export default function Home() {
       <Section dark>
         <div className="flex flex-col md:flex-row items-center gap-12">
           <div className="w-full md:w-1/3">
-            <Image
-              src="/IMG_4945.jpeg"
-              alt="Woodly light post craftsmanship"
-              width={800}
-              height={800}
-              className="rounded-2xl object-cover w-full"
-            />
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="rounded-2xl object-cover w-full aspect-square"
+            >
+              <source src="/light-post-turn-on-light.MP4" type="video/mp4" />
+            </video>
           </div>
           <div className="w-full md:w-1/2">
             <h2 className="uppercase text-3xl md:text-5xl mb-6">
