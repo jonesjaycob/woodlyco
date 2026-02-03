@@ -136,7 +136,7 @@ export default function Home() {
           <Image
             width={1500}
             height={1500}
-            src="/IMG_5638.jpg"
+            src="/IMG_3770.jpeg"
             alt="Handcrafted wooden light post tools"
             className="absolute inset-0 w-full h-full object-cover opacity-20"
           />
@@ -218,11 +218,11 @@ export default function Home() {
       {/* Gallery Preview */}
       <Section dark>
         <div className="flex flex-col md:flex-row items-center gap-12">
-          <div className="w-full md:w-1/2">
+          <div className="w-full md:w-1/3">
             <Image
-              src="/IMG_5639.jpg"
+              src="/IMG_4945.jpeg"
               alt="Woodly light post craftsmanship"
-              width={600}
+              width={800}
               height={800}
               className="rounded-2xl object-cover w-full"
             />

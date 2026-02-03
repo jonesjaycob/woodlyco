@@ -90,34 +90,36 @@ export default function AboutPage() {
             </h2>
             <div className="space-y-4 text-muted-foreground">
               <p>
-                One day, I had to cut down a large tree in my yard — it was 
-                growing too close to the house. But I couldn't bring myself to 
+                One day, I had to cut down a large tree in my yard — it was
+                growing too close to the house. But I couldn't bring myself to
                 turn this old tree into firewood. It deserved better than that.
               </p>
               <p>
-                So I decided to mill it out by hand with my chainsaw. The wood 
-                had so much character — years of growth rings, natural grain 
-                patterns, a story in every inch. I thought: why not create 
+                So I decided to mill it out by hand with my chainsaw. The wood
+                had so much character — years of growth rings, natural grain
+                patterns, a story in every inch. I thought: why not create
                 something amazing out of this?
               </p>
               <p>
-                As I worked, neighbors would stop by wondering what I was building. 
-                When I finally got that first post up, it turned out more beautiful 
-                than I imagined. That's when it hit me — I wanted others to 
-                experience this same feeling.
+                As I worked, neighbors would stop by wondering what I was
+                building. When I finally got that first post up, it turned out
+                more beautiful than I imagined. That's when it hit me — I wanted
+                others to experience this same feeling.
               </p>
               <p>
-                I searched everywhere and couldn't find anything like it. So I 
-                designed my own in CAD and started building them. That's how 
-                Woodly Company was born — from one tree that was too special 
-                to become firewood.
+                I searched everywhere and couldn't find anything like it. So I
+                designed my own in CAD and started building them. That's how
+                Woodly Company was born — from one tree that was too special to
+                become firewood.
               </p>
             </div>
           </div>
-          <PlaceholderImage
-            aspectRatio="square"
-            label="The original tree / first light post"
-            className="w-full"
+          <Image
+            src="/IMG_3700.jpeg"
+            alt="Woodly light post craftsmanship"
+            width={800}
+            height={800}
+            className="rounded-2xl object-cover w-full"
           />
         </div>
       </Section>
@@ -152,7 +154,7 @@ export default function AboutPage() {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {processSteps.map((step) => (
             <div key={step.step} className="relative">
-              <span className="text-6xl font-bold text-muted/30 absolute -top-4 -left-2">
+              <span className="text-6xl font-bold text-muted absolute -top-4 -left-2">
                 {step.step}
               </span>
               <div className="pt-8 pl-4">

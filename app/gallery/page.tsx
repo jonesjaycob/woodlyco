@@ -20,37 +20,19 @@ const galleryItems = [
     id: 1,
     title: "Classic Driveway Post",
     description: "11″×11″×11′ pine post with solar lantern",
-    image: "/IMG_5638.jpg",
+    image: "/IMG_4945.jpeg",
   },
   {
     id: 2,
     title: "Garden Pathway Light",
     description: "Traditional mortise and tenon joinery",
-    image: "/IMG_5639.jpg",
+    image: "/IMG_4942.jpeg",
   },
   {
     id: 3,
     title: "Estate Entrance",
     description: "Custom matched pair for grand driveways",
-    image: null,
-  },
-  {
-    id: 4,
-    title: "Rustic Farmhouse",
-    description: "Natural character pine with dark stain",
-    image: null,
-  },
-  {
-    id: 5,
-    title: "Modern Minimalist",
-    description: "Clean lines with hidden LED lighting",
-    image: null,
-  },
-  {
-    id: 6,
-    title: "Battery Powered",
-    description: "Flexible placement, no wiring required",
-    image: null,
+    image: "/IMG_4941.jpeg",
   },
 ];
 
@@ -99,10 +81,10 @@ export default function GalleryPage() {
           {galleryItems.map((item) => (
             <Card
               key={item.id}
-              className="overflow-hidden group cursor-pointer"
+              className="overflow-hidden group cursor-pointer pt-0"
             >
               {item.image ? (
-                <div className="relative aspect-[4/3] overflow-hidden">
+                <div className="relative aspect-2/3 overflow-hidden">
                   <Image
                     src={item.image}
                     alt={item.title}
@@ -141,21 +123,25 @@ export default function GalleryPage() {
             <Card
               key={tier.name}
               className={`p-8 ${
-                tier.featured
-                  ? "border-2 border-primary bg-card"
-                  : "bg-card"
+                tier.featured ? "border-2 border-primary bg-card" : "bg-card"
               }`}
             >
               <div className="mb-6">
-                <h3 className="text-2xl font-bold text-card-foreground">{tier.name}</h3>
+                <h3 className="text-2xl font-bold text-card-foreground">
+                  {tier.name}
+                </h3>
                 <p className="text-muted-foreground">{tier.size}</p>
               </div>
-              <p className="text-3xl font-bold mb-6 text-card-foreground">{tier.price}</p>
+              <p className="text-3xl font-bold mb-6 text-card-foreground">
+                {tier.price}
+              </p>
               <ul className="space-y-3 mb-8">
                 {tier.features.map((feature) => (
                   <li key={feature} className="flex items-start gap-2">
                     <span className="text-green-600 mt-0.5">✓</span>
-                    <span className="text-sm text-muted-foreground">{feature}</span>
+                    <span className="text-sm text-muted-foreground">
+                      {feature}
+                    </span>
                   </li>
                 ))}
               </ul>
