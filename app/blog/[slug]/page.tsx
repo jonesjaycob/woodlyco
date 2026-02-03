@@ -36,6 +36,51 @@ function formatDate(dateString: string) {
   });
 }
 
+// Parse inline markdown (bold, italic, links) within a string
+function parseInlineMarkdown(text: string, keyPrefix: string): React.ReactNode[] {
+  const parts: React.ReactNode[] = [];
+  // Combined regex for **bold**, *italic*, and [links](url)
+  const inlineRegex = /\*\*(.+?)\*\*|\*(.+?)\*|\[([^\]]+)\]\(([^)]+)\)/g;
+  let lastIndex = 0;
+  let match;
+  let keyIndex = 0;
+
+  while ((match = inlineRegex.exec(text)) !== null) {
+    // Add text before this match
+    if (match.index > lastIndex) {
+      parts.push(text.slice(lastIndex, match.index));
+    }
+
+    if (match[1]) {
+      // **bold**
+      parts.push(<strong key={`${keyPrefix}-b-${keyIndex++}`}>{match[1]}</strong>);
+    } else if (match[2]) {
+      // *italic*
+      parts.push(<em key={`${keyPrefix}-i-${keyIndex++}`}>{match[2]}</em>);
+    } else if (match[3] && match[4]) {
+      // [link](url)
+      parts.push(
+        <Link
+          key={`${keyPrefix}-l-${keyIndex++}`}
+          href={match[4]}
+          className="text-primary underline hover:no-underline"
+        >
+          {match[3]}
+        </Link>
+      );
+    }
+
+    lastIndex = match.index + match[0].length;
+  }
+
+  // Add remaining text
+  if (lastIndex < text.length) {
+    parts.push(text.slice(lastIndex));
+  }
+
+  return parts.length > 0 ? parts : [text];
+}
+
 // Simple markdown-like rendering for content
 function renderContent(content: string) {
   const lines = content.split("\n");
@@ -46,55 +91,29 @@ function renderContent(content: string) {
     if (line.startsWith("## ")) {
       elements.push(
         <h2 key={key++} className="text-2xl font-bold mt-8 mb-4">
-          {line.slice(3)}
+          {parseInlineMarkdown(line.slice(3), `h2-${key}`)}
         </h2>
       );
-    } else if (line.startsWith("- **")) {
-      const match = line.match(/- \*\*(.+?)\*\* — (.+)/);
-      if (match) {
-        elements.push(
-          <li key={key++} className="mb-2">
-            <strong>{match[1]}</strong> — {match[2]}
-          </li>
-        );
-      }
+    } else if (line.startsWith("### ")) {
+      elements.push(
+        <h3 key={key++} className="text-xl font-semibold mt-6 mb-3">
+          {parseInlineMarkdown(line.slice(4), `h3-${key}`)}
+        </h3>
+      );
     } else if (line.startsWith("- ")) {
       elements.push(
         <li key={key++} className="mb-2">
-          {line.slice(2)}
+          {parseInlineMarkdown(line.slice(2), `li-${key}`)}
         </li>
       );
+    } else if (line.trim() === "---") {
+      elements.push(<hr key={key++} className="my-8 border-border" />);
     } else if (line.trim() === "") {
       elements.push(<br key={key++} />);
     } else {
-      // Handle inline links [text](/url)
-      const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
-      const parts: React.ReactNode[] = [];
-      let lastIndex = 0;
-      let match;
-
-      while ((match = linkRegex.exec(line)) !== null) {
-        if (match.index > lastIndex) {
-          parts.push(line.slice(lastIndex, match.index));
-        }
-        parts.push(
-          <Link
-            key={`link-${key++}`}
-            href={match[2]}
-            className="text-primary underline hover:no-underline"
-          >
-            {match[1]}
-          </Link>
-        );
-        lastIndex = match.index + match[0].length;
-      }
-      if (lastIndex < line.length) {
-        parts.push(line.slice(lastIndex));
-      }
-
       elements.push(
         <p key={key++} className="mb-4 text-muted-foreground leading-relaxed">
-          {parts.length > 0 ? parts : line}
+          {parseInlineMarkdown(line, `p-${key}`)}
         </p>
       );
     }
