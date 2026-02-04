@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createInventoryItem, updateInventoryItem, deleteInventoryItem } from "@/lib/actions/inventory";
 import { MultiImageUpload } from "@/components/admin/multi-image-upload";
+import { AiWriter } from "@/components/admin/ai-writer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -26,15 +27,28 @@ export function InventoryForm({ item }: InventoryFormProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [images, setImages] = useState<string[]>(item?.images ?? []);
+  const [name, setName] = useState(item?.name ?? "");
+  const [slug, setSlug] = useState(item?.slug ?? "");
+  const [description, setDescription] = useState(item?.description ?? "");
   const router = useRouter();
   const isEditing = !!item;
+
+  function handleAiApply(fields: Record<string, string>, imageUrl?: string) {
+    if (fields.name) setName(fields.name);
+    if (fields.slug) setSlug(fields.slug);
+    if (fields.description) setDescription(fields.description);
+    if (imageUrl) setImages((prev) => [...prev, imageUrl]);
+  }
 
   async function handleSubmit(formData: FormData) {
     setLoading(true);
     setError(null);
 
-    // Inject images as comma-separated string (existing action expects this)
+    // Inject client-managed fields
     formData.set("images", images.join(", "));
+    formData.set("name", name);
+    formData.set("slug", slug);
+    formData.set("description", description);
 
     const result = isEditing
       ? await updateInventoryItem(item.id, formData)
@@ -65,23 +79,45 @@ export function InventoryForm({ item }: InventoryFormProps) {
 
       <Card>
         <CardHeader>
-          <CardTitle>{isEditing ? "Edit Item" : "New Item"}</CardTitle>
+          <div className="flex items-center justify-between">
+            <CardTitle>{isEditing ? "Edit Item" : "New Item"}</CardTitle>
+            <AiWriter mode="product" onApply={handleAiApply} />
+          </div>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2">
             <div className="space-y-2">
               <Label htmlFor="name">Name</Label>
-              <Input id="name" name="name" defaultValue={item?.name ?? ""} required />
+              <Input
+                id="name"
+                name="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
             </div>
             <div className="space-y-2">
               <Label htmlFor="slug">Slug</Label>
-              <Input id="slug" name="slug" defaultValue={item?.slug ?? ""} required placeholder="e.g., lp-004" />
+              <Input
+                id="slug"
+                name="slug"
+                value={slug}
+                onChange={(e) => setSlug(e.target.value)}
+                required
+                placeholder="e.g., lp-004"
+              />
             </div>
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="description">Description</Label>
-            <Textarea id="description" name="description" defaultValue={item?.description ?? ""} rows={3} />
+            <Textarea
+              id="description"
+              name="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              rows={3}
+            />
           </div>
 
           <div className="grid gap-4 md:grid-cols-3">

@@ -2,8 +2,35 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { requireAuth, requireAdmin } from "@/lib/actions/auth-guard";
 import type { Order, OrderWithClient, OrderDetail, Quote, Profile } from "@/lib/types/database";
+
+const ORDER_STATUS_LABELS: Record<string, string> = {
+  confirmed: "Confirmed",
+  materials: "Sourcing Materials",
+  building: "Building",
+  finishing: "Finishing",
+  ready: "Ready",
+  shipped: "Shipped",
+  delivered: "Delivered",
+  completed: "Completed",
+};
+
+async function logOrderStatusChange(orderId: string, fromStatus: string, toStatus: string) {
+  const adminSupabase = createAdminClient();
+  const fromLabel = ORDER_STATUS_LABELS[fromStatus] || fromStatus;
+  const toLabel = ORDER_STATUS_LABELS[toStatus] || toStatus;
+  const { error } = await adminSupabase.from("messages").insert({
+    order_id: orderId,
+    sender_id: null,
+    body: `Order status changed from ${fromLabel} to ${toLabel}`,
+    is_read: true,
+  });
+  if (error) {
+    console.error("Failed to log order status change:", error.message);
+  }
+}
 
 export async function createOrderFromQuote(
   quoteId: string
@@ -119,6 +146,17 @@ export async function updateOrderStatus(
 
   const supabase = await createClient();
 
+  // Fetch current status for logging
+  const { data: current } = await supabase
+    .from("orders")
+    .select("status")
+    .eq("id", id)
+    .single();
+
+  if (!current) return { error: "Order not found" };
+
+  const currentStatus = (current as { status: string }).status;
+
   const updates: Record<string, unknown> = { status };
   if (statusNote !== undefined) updates.status_note = statusNote;
   if (extras?.estimated_completion) updates.estimated_completion = extras.estimated_completion;
@@ -130,6 +168,10 @@ export async function updateOrderStatus(
     .eq("id", id);
 
   if (error) return { error: error.message };
+
+  if (currentStatus !== status) {
+    await logOrderStatusChange(id, currentStatus, status);
+  }
 
   revalidatePath(`/admin/orders/${id}`);
   revalidatePath(`/portal/orders/${id}`);

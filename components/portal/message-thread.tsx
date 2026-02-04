@@ -25,7 +25,7 @@ export function MessageThread({ messages, type, refId, currentUserId }: MessageT
 
   useEffect(() => {
     const unreadIds = messages
-      .filter((m) => !m.is_read && m.sender_id !== currentUserId)
+      .filter((m) => !m.is_read && m.sender_id && m.sender_id !== currentUserId)
       .map((m) => m.id);
     if (unreadIds.length > 0) {
       markAsRead(unreadIds);
@@ -53,7 +53,22 @@ export function MessageThread({ messages, type, refId, currentUserId }: MessageT
             </p>
           )}
           {messages.map((msg) => {
+            const isSystem = !msg.sender_id;
             const isOwn = msg.sender_id === currentUserId;
+
+            if (isSystem) {
+              return (
+                <div key={msg.id} className="flex justify-center">
+                  <div className="text-xs text-muted-foreground bg-muted/50 rounded-full px-3 py-1">
+                    {msg.body}
+                    <span className="opacity-50 ml-2">
+                      {new Date(msg.created_at).toLocaleString()}
+                    </span>
+                  </div>
+                </div>
+              );
+            }
+
             return (
               <div
                 key={msg.id}

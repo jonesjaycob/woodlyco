@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { acceptQuote, rejectQuote } from "@/lib/actions/quotes";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -13,18 +14,35 @@ function formatCents(cents: number): string {
 
 export function QuoteDetailCard({ quote }: { quote: QuoteDetail }) {
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
-  const canRespond = quote.status === "quoted";
+  const isExpired = quote.valid_until && new Date(quote.valid_until) < new Date();
+  const canRespond = quote.status === "quoted" && !isExpired;
 
   async function handleAccept() {
+    if (!confirm("Accept this quote and proceed with the order?")) return;
     setLoading(true);
-    await acceptQuote(quote.id);
+    setError(null);
+    const result = await acceptQuote(quote.id);
+    if (result.error) {
+      setError(result.error);
+    } else {
+      router.refresh();
+    }
     setLoading(false);
   }
 
   async function handleReject() {
+    if (!confirm("Are you sure you want to decline this quote?")) return;
     setLoading(true);
-    await rejectQuote(quote.id);
+    setError(null);
+    const result = await rejectQuote(quote.id);
+    if (result.error) {
+      setError(result.error);
+    } else {
+      router.refresh();
+    }
     setLoading(false);
   }
 
@@ -106,8 +124,10 @@ export function QuoteDetailCard({ quote }: { quote: QuoteDetail }) {
               </div>
             </div>
             {quote.valid_until && (
-              <p className="text-xs text-muted-foreground mt-3">
-                Quote valid until {new Date(quote.valid_until).toLocaleDateString()}
+              <p className={`text-xs mt-3 ${isExpired ? "text-destructive font-medium" : "text-muted-foreground"}`}>
+                {isExpired
+                  ? `Quote expired on ${new Date(quote.valid_until).toLocaleDateString()}`
+                  : `Quote valid until ${new Date(quote.valid_until).toLocaleDateString()}`}
               </p>
             )}
           </CardContent>
@@ -118,6 +138,11 @@ export function QuoteDetailCard({ quote }: { quote: QuoteDetail }) {
       {canRespond && (
         <Card>
           <CardContent className="pt-6">
+            {error && (
+              <div className="bg-destructive/10 text-destructive text-sm p-3 rounded-md mb-4">
+                {error}
+              </div>
+            )}
             <p className="text-sm text-muted-foreground mb-4">
               Ready to proceed? Accept this quote to start your order, or reject to decline.
             </p>
@@ -129,6 +154,17 @@ export function QuoteDetailCard({ quote }: { quote: QuoteDetail }) {
                 Decline
               </Button>
             </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Expired notice when quote is still in "quoted" status but expired */}
+      {quote.status === "quoted" && isExpired && (
+        <Card>
+          <CardContent className="pt-6">
+            <p className="text-sm text-destructive">
+              This quote has expired. Please contact us to request an updated quote.
+            </p>
           </CardContent>
         </Card>
       )}

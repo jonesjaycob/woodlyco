@@ -24,6 +24,7 @@ import {
   BoxIcon,
   NewspaperIcon,
   ImageIcon,
+  MessageSquareIcon,
 } from "lucide-react";
 
 const navItems = [
@@ -31,6 +32,7 @@ const navItems = [
   { title: "Clients", href: "/admin/clients", icon: UsersIcon },
   { title: "Quotes", href: "/admin/quotes", icon: FileTextIcon },
   { title: "Orders", href: "/admin/orders", icon: PackageIcon },
+  { title: "Messages", href: "/admin/messages", icon: MessageSquareIcon },
   { title: "Inventory", href: "/admin/inventory", icon: BoxIcon },
   { title: "Blog", href: "/admin/blog", icon: NewspaperIcon },
   { title: "Gallery", href: "/admin/gallery", icon: ImageIcon },

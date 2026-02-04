@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createGalleryItem, updateGalleryItem, deleteGalleryItem } from "@/lib/actions/gallery";
 import { ImageUpload } from "@/components/admin/image-upload";
+import { AiWriter } from "@/components/admin/ai-writer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -27,8 +28,16 @@ export function GalleryForm({ item }: GalleryFormProps) {
   const [error, setError] = useState<string | null>(null);
   const [image, setImage] = useState(item?.image ?? "");
   const [published, setPublished] = useState(item?.published ?? true);
+  const [title, setTitle] = useState(item?.title ?? "");
+  const [description, setDescription] = useState(item?.description ?? "");
   const router = useRouter();
   const isEditing = !!item;
+
+  function handleAiApply(fields: Record<string, string>, imageUrl?: string) {
+    if (fields.title) setTitle(fields.title);
+    if (fields.description) setDescription(fields.description);
+    if (imageUrl) setImage(imageUrl);
+  }
 
   async function handleSubmit(formData: FormData) {
     setLoading(true);
@@ -36,6 +45,8 @@ export function GalleryForm({ item }: GalleryFormProps) {
 
     formData.set("image", image);
     formData.set("published", published.toString());
+    formData.set("title", title);
+    formData.set("description", description);
 
     if (!image) {
       setError("Image is required");
@@ -72,13 +83,22 @@ export function GalleryForm({ item }: GalleryFormProps) {
 
       <Card>
         <CardHeader>
-          <CardTitle>{isEditing ? "Edit Gallery Item" : "New Gallery Item"}</CardTitle>
+          <div className="flex items-center justify-between">
+            <CardTitle>{isEditing ? "Edit Gallery Item" : "New Gallery Item"}</CardTitle>
+            <AiWriter mode="gallery" onApply={handleAiApply} />
+          </div>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2">
             <div className="space-y-2">
               <Label htmlFor="title">Title</Label>
-              <Input id="title" name="title" defaultValue={item?.title ?? ""} required />
+              <Input
+                id="title"
+                name="title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                required
+              />
             </div>
             <div className="space-y-2">
               <Label htmlFor="sort_order">Sort Order</Label>
@@ -96,7 +116,8 @@ export function GalleryForm({ item }: GalleryFormProps) {
             <Textarea
               id="description"
               name="description"
-              defaultValue={item?.description ?? ""}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
               rows={2}
             />
           </div>

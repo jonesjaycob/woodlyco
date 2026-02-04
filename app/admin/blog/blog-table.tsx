@@ -1,6 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { ExternalLinkIcon } from "lucide-react";
 import { DataTable } from "@/components/ui/data-table";
 import { Badge } from "@/components/ui/badge";
 import type { BlogPost } from "@/lib/types/database";
@@ -14,7 +16,15 @@ export function BlogTable({ posts }: { posts: BlogPost[] }) {
       cell: (post: BlogPost) => (
         <div>
           <p className="font-medium">{post.title}</p>
-          <p className="text-xs text-muted-foreground">/blog/{post.slug}</p>
+          <Link
+            href={`/blog/${post.slug}`}
+            className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
+            onClick={(e) => e.stopPropagation()}
+            target="_blank"
+          >
+            /blog/{post.slug}
+            <ExternalLinkIcon className="size-3" />
+          </Link>
         </div>
       ),
     },

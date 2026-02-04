@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createPost, updatePost, deletePost } from "@/lib/actions/blog";
 import { ImageUpload } from "@/components/admin/image-upload";
+import { AiWriter } from "@/components/admin/ai-writer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -35,13 +36,32 @@ export function BlogForm({ post }: BlogFormProps) {
   const [image, setImage] = useState(post?.image ?? "");
   const [slug, setSlug] = useState(post?.slug ?? "");
   const [published, setPublished] = useState(post?.published ?? false);
+  const [title, setTitle] = useState(post?.title ?? "");
+  const [excerpt, setExcerpt] = useState(post?.excerpt ?? "");
+  const [content, setContent] = useState(post?.content ?? "");
+  const [author, setAuthor] = useState(post?.author ?? "Woodly Team");
+  const [category, setCategory] = useState(post?.category ?? "");
   const router = useRouter();
   const isEditing = !!post;
 
   function handleTitleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setTitle(e.target.value);
     if (!isEditing) {
       setSlug(slugify(e.target.value));
     }
+  }
+
+  function handleAiApply(fields: Record<string, string>, imageUrl?: string) {
+    if (fields.title) {
+      setTitle(fields.title);
+      if (!isEditing) setSlug(fields.slug || slugify(fields.title));
+    }
+    if (fields.slug && isEditing) setSlug(fields.slug);
+    if (fields.excerpt) setExcerpt(fields.excerpt);
+    if (fields.content) setContent(fields.content);
+    if (fields.author) setAuthor(fields.author);
+    if (fields.category) setCategory(fields.category);
+    if (imageUrl) setImage(imageUrl);
   }
 
   async function handleSubmit(formData: FormData) {
@@ -49,9 +69,14 @@ export function BlogForm({ post }: BlogFormProps) {
     setError(null);
 
     // Inject client-managed fields
+    formData.set("title", title);
     formData.set("image", image);
     formData.set("slug", slug);
     formData.set("published", published.toString());
+    formData.set("excerpt", excerpt);
+    formData.set("content", content);
+    formData.set("author", author);
+    formData.set("category", category);
 
     const result = isEditing
       ? await updatePost(post.id, formData)
@@ -85,7 +110,10 @@ export function BlogForm({ post }: BlogFormProps) {
         <div className="lg:col-span-2 space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>{isEditing ? "Edit Post" : "New Post"}</CardTitle>
+              <div className="flex items-center justify-between">
+                <CardTitle>{isEditing ? "Edit Post" : "New Post"}</CardTitle>
+                <AiWriter mode="blog" onApply={handleAiApply} />
+              </div>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
@@ -93,7 +121,7 @@ export function BlogForm({ post }: BlogFormProps) {
                 <Input
                   id="title"
                   name="title"
-                  defaultValue={post?.title ?? ""}
+                  value={title}
                   onChange={handleTitleChange}
                   required
                 />
@@ -115,7 +143,8 @@ export function BlogForm({ post }: BlogFormProps) {
                 <Textarea
                   id="excerpt"
                   name="excerpt"
-                  defaultValue={post?.excerpt ?? ""}
+                  value={excerpt}
+                  onChange={(e) => setExcerpt(e.target.value)}
                   rows={2}
                   placeholder="Brief summary for blog listing"
                 />
@@ -126,7 +155,8 @@ export function BlogForm({ post }: BlogFormProps) {
                 <Textarea
                   id="content"
                   name="content"
-                  defaultValue={post?.content ?? ""}
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
                   rows={20}
                   required
                   className="font-mono text-sm"
@@ -175,7 +205,8 @@ export function BlogForm({ post }: BlogFormProps) {
                 <Input
                   id="author"
                   name="author"
-                  defaultValue={post?.author ?? "Woodly Team"}
+                  value={author}
+                  onChange={(e) => setAuthor(e.target.value)}
                 />
               </div>
 
@@ -184,7 +215,8 @@ export function BlogForm({ post }: BlogFormProps) {
                 <Input
                   id="category"
                   name="category"
-                  defaultValue={post?.category ?? ""}
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
                   placeholder="e.g., Craftsmanship"
                 />
               </div>

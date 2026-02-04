@@ -196,7 +196,7 @@ export type Message = {
   id: string;
   quote_id: string | null;
   order_id: string | null;
-  sender_id: string;
+  sender_id: string | null;
   body: string;
   is_read: boolean;
   created_at: string;
@@ -236,7 +236,7 @@ export type OrderDetail = Order & {
 };
 
 export type MessageWithSender = Message & {
-  profiles: Pick<Profile, "full_name" | "email">;
+  profiles: Pick<Profile, "full_name" | "email"> | null;
 };
 
 // --- Blog Posts ---
