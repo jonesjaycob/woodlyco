@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { requireAuth, requireAdmin } from "@/lib/actions/auth-guard";
 import type { Quote, QuoteWithClient, QuoteDetail } from "@/lib/types/database";
 
 export async function createQuoteRequest(
@@ -54,6 +55,9 @@ export async function getClientQuotes(): Promise<Quote[]> {
 }
 
 export async function getQuoteById(id: string): Promise<QuoteDetail | null> {
+  const auth = await requireAuth();
+  if (auth.error) return null;
+
   const supabase = await createClient();
 
   const { data } = await supabase
@@ -66,6 +70,9 @@ export async function getQuoteById(id: string): Promise<QuoteDetail | null> {
 }
 
 export async function getAllQuotes(): Promise<QuoteWithClient[]> {
+  const auth = await requireAdmin();
+  if (auth.error) return [];
+
   const supabase = await createClient();
 
   const { data } = await supabase
@@ -77,6 +84,9 @@ export async function getAllQuotes(): Promise<QuoteWithClient[]> {
 }
 
 export async function updateQuoteStatus(id: string, status: Quote["status"], adminNotes?: string) {
+  const auth = await requireAdmin();
+  if (auth.error) return { error: auth.error };
+
   const supabase = await createClient();
 
   const updates: Record<string, unknown> = { status };
@@ -98,6 +108,9 @@ export async function addLineItem(
   quoteId: string,
   item: { description: string; quantity: number; unit_price: number; sort_order: number }
 ) {
+  const auth = await requireAdmin();
+  if (auth.error) return { error: auth.error };
+
   const supabase = await createClient();
 
   const { data, error } = await supabase
@@ -116,6 +129,9 @@ export async function updateLineItem(
   id: string,
   updates: { description?: string; quantity?: number; unit_price?: number; sort_order?: number }
 ) {
+  const auth = await requireAdmin();
+  if (auth.error) return { error: auth.error };
+
   const supabase = await createClient();
 
   const { error } = await supabase
@@ -128,6 +144,9 @@ export async function updateLineItem(
 }
 
 export async function removeLineItem(id: string, quoteId: string) {
+  const auth = await requireAdmin();
+  if (auth.error) return { error: auth.error };
+
   const supabase = await createClient();
 
   const { error } = await supabase.from("quote_line_items").delete().eq("id", id);
@@ -139,6 +158,9 @@ export async function removeLineItem(id: string, quoteId: string) {
 }
 
 export async function sendQuote(id: string, quotedTotal: number, validUntil: string) {
+  const auth = await requireAdmin();
+  if (auth.error) return { error: auth.error };
+
   const supabase = await createClient();
 
   const { error } = await supabase
@@ -158,7 +180,20 @@ export async function sendQuote(id: string, quotedTotal: number, validUntil: str
 }
 
 export async function acceptQuote(id: string) {
+  const auth = await requireAuth();
+  if (auth.error) return { error: auth.error };
+
   const supabase = await createClient();
+
+  const { data: quote } = await supabase
+    .from("quotes")
+    .select("client_id, status")
+    .eq("id", id)
+    .single();
+
+  if (!quote) return { error: "Quote not found" };
+  if ((quote as any).client_id !== auth.user!.id) return { error: "Not authorized" };
+  if ((quote as any).status !== "quoted") return { error: "Quote cannot be accepted in its current status" };
 
   const { error } = await supabase
     .from("quotes")
@@ -173,7 +208,20 @@ export async function acceptQuote(id: string) {
 }
 
 export async function rejectQuote(id: string) {
+  const auth = await requireAuth();
+  if (auth.error) return { error: auth.error };
+
   const supabase = await createClient();
+
+  const { data: quote } = await supabase
+    .from("quotes")
+    .select("client_id, status")
+    .eq("id", id)
+    .single();
+
+  if (!quote) return { error: "Quote not found" };
+  if ((quote as any).client_id !== auth.user!.id) return { error: "Not authorized" };
+  if ((quote as any).status !== "quoted") return { error: "Quote cannot be rejected in its current status" };
 
   const { error } = await supabase
     .from("quotes")

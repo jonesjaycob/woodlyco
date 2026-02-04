@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { requireAdmin } from "@/lib/actions/auth-guard";
 import type { GalleryItem } from "@/lib/types/database";
 
 export async function getPublishedGalleryItems(): Promise<GalleryItem[]> {
@@ -17,6 +18,9 @@ export async function getPublishedGalleryItems(): Promise<GalleryItem[]> {
 }
 
 export async function getAllGalleryItems(): Promise<GalleryItem[]> {
+  const auth = await requireAdmin();
+  if (auth.error) return [];
+
   const supabase = await createClient();
 
   const { data } = await supabase
@@ -28,6 +32,9 @@ export async function getAllGalleryItems(): Promise<GalleryItem[]> {
 }
 
 export async function getGalleryItemById(id: string): Promise<GalleryItem | null> {
+  const auth = await requireAdmin();
+  if (auth.error) return null;
+
   const supabase = await createClient();
 
   const { data } = await supabase
@@ -40,6 +47,9 @@ export async function getGalleryItemById(id: string): Promise<GalleryItem | null
 }
 
 export async function createGalleryItem(formData: FormData) {
+  const auth = await requireAdmin();
+  if (auth.error) return { error: auth.error };
+
   const supabase = await createClient();
 
   const item = {
@@ -64,6 +74,9 @@ export async function createGalleryItem(formData: FormData) {
 }
 
 export async function updateGalleryItem(id: string, formData: FormData) {
+  const auth = await requireAdmin();
+  if (auth.error) return { error: auth.error };
+
   const supabase = await createClient();
 
   const updates = {
@@ -88,6 +101,9 @@ export async function updateGalleryItem(id: string, formData: FormData) {
 }
 
 export async function deleteGalleryItem(id: string) {
+  const auth = await requireAdmin();
+  if (auth.error) return { error: auth.error };
+
   const supabase = await createClient();
 
   const { error } = await supabase.from("gallery_items").delete().eq("id", id);

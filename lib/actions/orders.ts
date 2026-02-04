@@ -2,11 +2,15 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { requireAuth, requireAdmin } from "@/lib/actions/auth-guard";
 import type { Order, OrderWithClient, OrderDetail, Quote, Profile } from "@/lib/types/database";
 
 export async function createOrderFromQuote(
   quoteId: string
 ): Promise<{ error: string } | { data: Order }> {
+  const auth = await requireAdmin();
+  if (auth.error) return { error: auth.error };
+
   const supabase = await createClient();
 
   const { data: quoteData, error: quoteError } = await supabase
@@ -76,6 +80,9 @@ export async function getClientOrders(): Promise<Order[]> {
 }
 
 export async function getOrderById(id: string): Promise<OrderDetail | null> {
+  const auth = await requireAuth();
+  if (auth.error) return null;
+
   const supabase = await createClient();
 
   const { data } = await supabase
@@ -88,6 +95,9 @@ export async function getOrderById(id: string): Promise<OrderDetail | null> {
 }
 
 export async function getAllOrders(): Promise<OrderWithClient[]> {
+  const auth = await requireAdmin();
+  if (auth.error) return [];
+
   const supabase = await createClient();
 
   const { data } = await supabase
@@ -104,6 +114,9 @@ export async function updateOrderStatus(
   statusNote?: string,
   extras?: { estimated_completion?: string; tracking_number?: string }
 ) {
+  const auth = await requireAdmin();
+  if (auth.error) return { error: auth.error };
+
   const supabase = await createClient();
 
   const updates: Record<string, unknown> = { status };

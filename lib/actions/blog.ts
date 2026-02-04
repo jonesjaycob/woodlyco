@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { requireAdmin } from "@/lib/actions/auth-guard";
 import type { BlogPost } from "@/lib/types/database";
 
 export async function getPublishedPosts(): Promise<BlogPost[]> {
@@ -29,6 +30,9 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
 }
 
 export async function getAllPosts(): Promise<BlogPost[]> {
+  const auth = await requireAdmin();
+  if (auth.error) return [];
+
   const supabase = await createClient();
 
   const { data } = await supabase
@@ -40,6 +44,9 @@ export async function getAllPosts(): Promise<BlogPost[]> {
 }
 
 export async function getPostById(id: string): Promise<BlogPost | null> {
+  const auth = await requireAdmin();
+  if (auth.error) return null;
+
   const supabase = await createClient();
 
   const { data } = await supabase
@@ -52,6 +59,9 @@ export async function getPostById(id: string): Promise<BlogPost | null> {
 }
 
 export async function createPost(formData: FormData) {
+  const auth = await requireAdmin();
+  if (auth.error) return { error: auth.error };
+
   const supabase = await createClient();
 
   const item = {
@@ -81,6 +91,9 @@ export async function createPost(formData: FormData) {
 }
 
 export async function updatePost(id: string, formData: FormData) {
+  const auth = await requireAdmin();
+  if (auth.error) return { error: auth.error };
+
   const supabase = await createClient();
 
   const updates = {
@@ -110,6 +123,9 @@ export async function updatePost(id: string, formData: FormData) {
 }
 
 export async function deletePost(id: string) {
+  const auth = await requireAdmin();
+  if (auth.error) return { error: auth.error };
+
   const supabase = await createClient();
 
   const { error } = await supabase.from("blog_posts").delete().eq("id", id);

@@ -2,12 +2,16 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { requireAuth } from "@/lib/actions/auth-guard";
 import type { MessageWithSender } from "@/lib/types/database";
 
 export async function getMessages(
   type: "quote" | "order",
   id: string
 ): Promise<MessageWithSender[]> {
+  const auth = await requireAuth();
+  if (auth.error) return [];
+
   const supabase = await createClient();
 
   const column = type === "quote" ? "quote_id" : "order_id";
@@ -63,6 +67,9 @@ export async function sendMessage(formData: FormData) {
 
 export async function markAsRead(messageIds: string[]) {
   if (messageIds.length === 0) return;
+
+  const auth = await requireAuth();
+  if (auth.error) return;
 
   const supabase = await createClient();
 

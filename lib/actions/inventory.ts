@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { requireAdmin } from "@/lib/actions/auth-guard";
 import type { InventoryItem } from "@/lib/types/database";
 
 export async function getInventory(): Promise<InventoryItem[]> {
@@ -17,6 +18,9 @@ export async function getInventory(): Promise<InventoryItem[]> {
 }
 
 export async function getAllInventory(): Promise<InventoryItem[]> {
+  const auth = await requireAdmin();
+  if (auth.error) return [];
+
   const supabase = await createClient();
 
   const { data } = await supabase
@@ -52,6 +56,9 @@ export async function getInventoryById(id: string): Promise<InventoryItem | null
 }
 
 export async function createInventoryItem(formData: FormData) {
+  const auth = await requireAdmin();
+  if (auth.error) return { error: auth.error };
+
   const supabase = await createClient();
 
   const images = (formData.get("images") as string)
@@ -86,6 +93,9 @@ export async function createInventoryItem(formData: FormData) {
 }
 
 export async function updateInventoryItem(id: string, formData: FormData) {
+  const auth = await requireAdmin();
+  if (auth.error) return { error: auth.error };
+
   const supabase = await createClient();
 
   const images = (formData.get("images") as string)
@@ -120,6 +130,9 @@ export async function updateInventoryItem(id: string, formData: FormData) {
 }
 
 export async function deleteInventoryItem(id: string) {
+  const auth = await requireAdmin();
+  if (auth.error) return { error: auth.error };
+
   const supabase = await createClient();
 
   const { error } = await supabase.from("inventory").delete().eq("id", id);
