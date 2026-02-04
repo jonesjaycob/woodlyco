@@ -17,6 +17,8 @@ import {
 import { Logo } from "./ui/logo";
 import { Button } from "./ui/button";
 import { ThemeToggle } from "./theme-toggle";
+import { UserMenu } from "./auth/user-menu";
+import { useAuth } from "@/hooks/use-auth";
 
 const products = [
   {
@@ -57,6 +59,7 @@ const company = [
 export function NavigationMenuMain() {
   const isMobile = useIsMobile();
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const { user, profile } = useAuth();
 
   return (
     <nav className="absolute top-0 left-0 right-0 z-50">
@@ -121,9 +124,13 @@ export function NavigationMenuMain() {
           </NavigationMenu>
 
           <ThemeToggle />
-          <Button asChild>
-            <Link href="/contact">Get a Quote</Link>
-          </Button>
+          {user ? (
+            <UserMenu />
+          ) : (
+            <Button asChild>
+              <Link href="/login">Sign In</Link>
+            </Button>
+          )}
         </div>
 
         {/* Mobile Toggle */}
@@ -166,9 +173,20 @@ export function NavigationMenuMain() {
             </Link>
             <div className="flex items-center justify-between mt-4">
               <ThemeToggle />
-              <Button asChild>
-                <Link href="/contact">Get a Quote</Link>
-              </Button>
+              {user ? (
+                <div className="flex items-center gap-3">
+                  <Button variant="outline" asChild>
+                    <Link href={profile?.role === "admin" ? "/admin" : "/portal"}>
+                      Dashboard
+                    </Link>
+                  </Button>
+                  <UserMenu />
+                </div>
+              ) : (
+                <Button asChild>
+                  <Link href="/login">Sign In</Link>
+                </Button>
+              )}
             </div>
           </div>
         </div>

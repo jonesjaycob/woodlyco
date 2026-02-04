@@ -8,13 +8,12 @@ import { Button } from "@/components/ui/button";
 import { InquiryModal } from "@/components/inquiry-modal";
 import { SunIcon, BatteryIcon, ZapIcon } from "lucide-react";
 
-type InventoryItem = {
+type InventoryCardItem = {
   id: string;
   name: string;
   description: string;
   price: number;
   power: "solar" | "battery" | "electric";
-  status: "available" | "sold";
   images: string[];
   dimensions: string;
   wood: string;
@@ -36,7 +35,7 @@ export function InventoryCard({
   item,
   sold = false,
 }: {
-  item: InventoryItem;
+  item: InventoryCardItem;
   sold?: boolean;
 }) {
   const PowerIcon = powerIcons[item.power];
@@ -77,7 +76,7 @@ export function InventoryCard({
             <h3 className="font-semibold text-lg hover:underline">{item.name}</h3>
             {!sold && (
               <span className="text-xl font-bold">
-                ${item.price.toLocaleString()}
+                ${(item.price / 100).toLocaleString()}
               </span>
             )}
           </div>
