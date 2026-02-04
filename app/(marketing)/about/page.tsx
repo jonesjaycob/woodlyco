@@ -178,7 +178,7 @@ export default function AboutPage() {
           something beautiful together.
         </p>
         <Button size="lg" asChild>
-          <Link href="/contact">Get in Touch</Link>
+          <Link href="/portal/quotes/new">Get in Touch</Link>
         </Button>
       </Section>
     </main>

@@ -53,7 +53,7 @@ export default async function ShopPage() {
               custom post.
             </p>
             <Button asChild>
-              <Link href="/contact">Request Custom Order</Link>
+              <Link href="/portal/quotes/new">Request Custom Order</Link>
             </Button>
           </Card>
         )}
@@ -83,7 +83,7 @@ export default async function ShopPage() {
         </p>
         <div className="flex gap-4 justify-center flex-wrap">
           <Button asChild>
-            <Link href="/contact">Request Custom Order</Link>
+            <Link href="/portal/quotes/new">Request Custom Order</Link>
           </Button>
           <Button variant="outline" asChild>
             <Link href="/gallery">View Past Work</Link>

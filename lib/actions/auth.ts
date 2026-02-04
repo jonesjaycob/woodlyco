@@ -41,7 +41,8 @@ export async function signUp(formData: FormData) {
     return { error: error.message };
   }
 
-  redirect("/portal");
+  const redirectTo = formData.get("redirect") as string;
+  redirect(redirectTo || "/portal");
 }
 
 export async function signOut() {

@@ -5,7 +5,6 @@ import Image from "next/image";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { InquiryModal } from "@/components/inquiry-modal";
 import { SunIcon, BatteryIcon, ZapIcon } from "lucide-react";
 
 type InventoryCardItem = {
@@ -95,9 +94,9 @@ export function InventoryCard({
           </div>
         </div>
         {!sold && (
-          <InquiryModal productId={item.id} productName={item.name}>
-            <Button className="w-full mt-4">Inquire Now</Button>
-          </InquiryModal>
+          <Button className="w-full mt-4" asChild>
+            <Link href="/portal/quotes/new">Inquire Now</Link>
+          </Button>
         )}
       </div>
     </Card>

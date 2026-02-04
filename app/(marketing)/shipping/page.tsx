@@ -88,7 +88,7 @@ export default function ShippingPage() {
           your light post to you.
         </p>
         <Button asChild>
-          <Link href="/contact">Get a Quote</Link>
+          <Link href="/portal/quotes/new">Get a Quote</Link>
         </Button>
       </Section>
     </main>

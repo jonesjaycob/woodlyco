@@ -1,8 +1,5 @@
-"use client";
-
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { InquiryModal } from "@/components/inquiry-modal";
 
 interface ProductInquiryCtaProps {
   productId: string;
@@ -22,7 +19,7 @@ export function ProductInquiryCta({
           This post has found its home. Interested in something similar?
         </p>
         <Button asChild variant="outline" size="lg" className="w-full">
-          <Link href="/contact">Request a Custom Order</Link>
+          <Link href="/portal/quotes/new">Request a Custom Order</Link>
         </Button>
       </div>
     );
@@ -30,13 +27,11 @@ export function ProductInquiryCta({
 
   return (
     <div className="space-y-4">
-      <InquiryModal productId={productId} productName={productName}>
-        <Button size="lg" className="w-full">
-          Inquire About This Post
-        </Button>
-      </InquiryModal>
+      <Button size="lg" className="w-full" asChild>
+        <Link href="/portal/quotes/new">Inquire About This Post</Link>
+      </Button>
       <p className="text-sm text-muted-foreground text-center">
-        We'll reach out within 1-2 business days to discuss delivery options.
+        Create an account to submit a detailed quote request and track it in real-time.
       </p>
     </div>
   );

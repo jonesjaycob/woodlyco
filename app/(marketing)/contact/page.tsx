@@ -47,6 +47,20 @@ export default function ContactPage() {
       />
 
       <Section>
+        <Card className="p-6 mb-12 bg-primary/5 border-primary/20">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <div className="flex-1">
+              <h3 className="font-semibold mb-1">Looking for a custom quote?</h3>
+              <p className="text-sm text-muted-foreground">
+                <Link href="/register" className="text-primary hover:underline">Create an account</Link> to submit a detailed request and track it in real-time.
+              </p>
+            </div>
+            <Button asChild>
+              <Link href="/portal/quotes/new">Get a Quote</Link>
+            </Button>
+          </div>
+        </Card>
+
         <div className="grid md:grid-cols-2 gap-12">
           {/* Contact Info */}
           <div>

@@ -124,10 +124,13 @@ export function NavigationMenuMain() {
           </NavigationMenu>
 
           <ThemeToggle />
+          <Button asChild>
+            <Link href="/portal/quotes/new">Get a Quote</Link>
+          </Button>
           {user ? (
             <UserMenu />
           ) : (
-            <Button asChild>
+            <Button variant="outline" asChild>
               <Link href="/login">Sign In</Link>
             </Button>
           )}
@@ -171,6 +174,9 @@ export function NavigationMenuMain() {
             >
               Blog
             </Link>
+            <Button className="w-full" asChild>
+              <Link href="/portal/quotes/new">Get a Quote</Link>
+            </Button>
             <div className="flex items-center justify-between mt-4">
               <ThemeToggle />
               {user ? (
@@ -183,7 +189,7 @@ export function NavigationMenuMain() {
                   <UserMenu />
                 </div>
               ) : (
-                <Button asChild>
+                <Button variant="outline" asChild>
                   <Link href="/login">Sign In</Link>
                 </Button>
               )}

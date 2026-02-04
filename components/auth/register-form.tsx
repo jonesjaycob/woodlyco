@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { signUp } from "@/lib/actions/auth";
 import { Button } from "@/components/ui/button";
@@ -11,10 +12,13 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 export function RegisterForm() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirect") || "";
 
   async function handleSubmit(formData: FormData) {
     setLoading(true);
     setError(null);
+    formData.set("redirect", redirectTo);
     const result = await signUp(formData);
     if (result?.error) {
       setError(result.error);
@@ -73,7 +77,7 @@ export function RegisterForm() {
           </Button>
           <p className="text-sm text-muted-foreground text-center">
             Already have an account?{" "}
-            <Link href="/login" className="text-primary hover:underline">
+            <Link href={redirectTo ? `/login?redirect=${encodeURIComponent(redirectTo)}` : "/login"} className="text-primary hover:underline">
               Sign in
             </Link>
           </p>
