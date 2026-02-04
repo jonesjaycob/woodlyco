@@ -125,7 +125,7 @@ export function NavigationMenuMain() {
 
           <ThemeToggle />
           <Button asChild>
-            <Link href="/portal/quotes/new">Get a Quote</Link>
+            <Link href="/get-a-quote">Get a Quote</Link>
           </Button>
           {user ? (
             <UserMenu />
@@ -175,7 +175,7 @@ export function NavigationMenuMain() {
               Blog
             </Link>
             <Button className="w-full" asChild>
-              <Link href="/portal/quotes/new">Get a Quote</Link>
+              <Link href="/get-a-quote">Get a Quote</Link>
             </Button>
             <div className="flex items-center justify-between mt-4">
               <ThemeToggle />

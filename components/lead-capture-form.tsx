@@ -1,38 +1,47 @@
 "use client";
 
 import { useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { signUp } from "@/lib/actions/auth";
+import { captureLead } from "@/lib/actions/leads";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
-export function RegisterForm() {
+export function LeadCaptureForm() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const searchParams = useSearchParams();
-  const redirectTo = searchParams.get("redirect") || "";
-  const prefillName = searchParams.get("name") || "";
-  const prefillEmail = searchParams.get("email") || "";
+  const router = useRouter();
 
   async function handleSubmit(formData: FormData) {
     setLoading(true);
     setError(null);
-    formData.set("redirect", redirectTo);
-    const result = await signUp(formData);
-    if (result?.error) {
-      setError(result.error);
+
+    const result = await captureLead(formData);
+
+    if ("error" in result) {
+      setError(result.error ?? "Something went wrong.");
       setLoading(false);
+      return;
     }
+
+    const params = new URLSearchParams({
+      redirect: "/portal/quotes/new",
+      name: result.name,
+      email: result.email,
+    });
+
+    router.push(`/register?${params.toString()}`);
   }
 
   return (
-    <Card>
+    <Card className="max-w-md mx-auto">
       <CardHeader>
-        <CardTitle>Create Account</CardTitle>
-        <CardDescription>Sign up to request quotes and track your orders.</CardDescription>
+        <CardTitle>Get a Quote</CardTitle>
+        <CardDescription>
+          Enter your name and email to get started. We'll walk you through the rest.
+        </CardDescription>
       </CardHeader>
       <form action={handleSubmit}>
         <CardContent className="space-y-4">
@@ -42,13 +51,12 @@ export function RegisterForm() {
             </div>
           )}
           <div className="space-y-2">
-            <Label htmlFor="full_name">Full Name</Label>
+            <Label htmlFor="name">Name</Label>
             <Input
-              id="full_name"
-              name="full_name"
+              id="name"
+              name="name"
               type="text"
               placeholder="John Doe"
-              defaultValue={prefillName}
               required
             />
           </div>
@@ -59,29 +67,20 @@ export function RegisterForm() {
               name="email"
               type="email"
               placeholder="you@example.com"
-              defaultValue={prefillEmail}
-              required
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              name="password"
-              type="password"
-              placeholder="••••••••"
-              minLength={6}
               required
             />
           </div>
         </CardContent>
         <CardFooter className="flex flex-col gap-4 pt-2">
           <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? "Creating account..." : "Create Account"}
+            {loading ? "Continuing..." : "Continue"}
           </Button>
           <p className="text-sm text-muted-foreground text-center">
             Already have an account?{" "}
-            <Link href={redirectTo ? `/login?redirect=${encodeURIComponent(redirectTo)}` : "/login"} className="text-primary hover:underline">
+            <Link
+              href="/login?redirect=/portal/quotes/new"
+              className="text-primary hover:underline"
+            >
               Sign in
             </Link>
           </p>

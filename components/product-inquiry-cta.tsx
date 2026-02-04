@@ -19,7 +19,7 @@ export function ProductInquiryCta({
           This post has found its home. Interested in something similar?
         </p>
         <Button asChild variant="outline" size="lg" className="w-full">
-          <Link href="/portal/quotes/new">Request a Custom Order</Link>
+          <Link href="/get-a-quote">Request a Custom Order</Link>
         </Button>
       </div>
     );
@@ -28,7 +28,7 @@ export function ProductInquiryCta({
   return (
     <div className="space-y-4">
       <Button size="lg" className="w-full" asChild>
-        <Link href="/portal/quotes/new">Inquire About This Post</Link>
+        <Link href="/get-a-quote">Inquire About This Post</Link>
       </Button>
       <p className="text-sm text-muted-foreground text-center">
         Create an account to submit a detailed quote request and track it in real-time.

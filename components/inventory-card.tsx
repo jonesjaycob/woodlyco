@@ -95,7 +95,7 @@ export function InventoryCard({
         </div>
         {!sold && (
           <Button className="w-full mt-4" asChild>
-            <Link href="/portal/quotes/new">Inquire Now</Link>
+            <Link href="/get-a-quote">Inquire Now</Link>
           </Button>
         )}
       </div>

@@ -125,7 +125,7 @@ export default function Home() {
                   <Link href="/gallery">View Gallery</Link>
                 </Button>
                 <Button size="lg" variant="outline" asChild>
-                  <Link href="/portal/quotes/new">Get a Quote</Link>
+                  <Link href="/get-a-quote">Get a Quote</Link>
                 </Button>
               </div>
             </div>
@@ -259,7 +259,7 @@ export default function Home() {
         </p>
         <div className="flex flex-wrap justify-center gap-4">
           <Button size="lg" asChild>
-            <Link href="/portal/quotes/new">Start Your Project</Link>
+            <Link href="/get-a-quote">Start Your Project</Link>
           </Button>
           <Button size="lg" variant="outline" asChild>
             <Link href="/about">Learn About Us</Link>

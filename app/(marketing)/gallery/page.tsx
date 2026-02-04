@@ -140,7 +140,7 @@ export default async function GalleryPage() {
                 variant={tier.featured ? "default" : "outline"}
                 asChild
               >
-                <Link href="/portal/quotes/new">
+                <Link href="/get-a-quote">
                   {tier.featured ? "Request Quote" : "Get Started"}
                 </Link>
               </Button>
@@ -161,7 +161,7 @@ export default async function GalleryPage() {
             about bringing your vision to life.
           </p>
           <Button size="lg" asChild>
-            <Link href="/portal/quotes/new">Start a Conversation</Link>
+            <Link href="/get-a-quote">Start a Conversation</Link>
           </Button>
         </div>
       </Section>

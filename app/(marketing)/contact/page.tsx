@@ -56,7 +56,7 @@ export default function ContactPage() {
               </p>
             </div>
             <Button asChild>
-              <Link href="/portal/quotes/new">Get a Quote</Link>
+              <Link href="/get-a-quote">Get a Quote</Link>
             </Button>
           </div>
         </Card>

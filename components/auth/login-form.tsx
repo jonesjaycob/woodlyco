@@ -14,6 +14,7 @@ export function LoginForm() {
   const [loading, setLoading] = useState(false);
   const searchParams = useSearchParams();
   const redirectTo = searchParams.get("redirect") || "";
+  const prefillEmail = searchParams.get("email") || "";
 
   async function handleSubmit(formData: FormData) {
     setLoading(true);
@@ -46,6 +47,7 @@ export function LoginForm() {
               name="email"
               type="email"
               placeholder="you@example.com"
+              defaultValue={prefillEmail}
               required
             />
           </div>
@@ -60,7 +62,7 @@ export function LoginForm() {
             />
           </div>
         </CardContent>
-        <CardFooter className="flex flex-col gap-4">
+        <CardFooter className="flex flex-col gap-4 pt-2">
           <Button type="submit" className="w-full" disabled={loading}>
             {loading ? "Signing in..." : "Sign In"}
           </Button>

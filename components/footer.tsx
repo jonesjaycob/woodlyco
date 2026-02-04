@@ -5,7 +5,7 @@ const footerLinks = {
   products: [
     { label: "Shop", href: "/shop" },
     { label: "Gallery", href: "/gallery" },
-    { label: "Custom Orders", href: "/portal/quotes/new" },
+    { label: "Custom Orders", href: "/get-a-quote" },
   ],
   company: [
     { label: "About Us", href: "/about" },
