@@ -19,14 +19,20 @@ const navItems = [
   { href: "/admin/customers", label: "Customers", icon: UsersIcon },
 ];
 
-function LoginForm({ onLogin }: { onLogin: (password: string) => void }) {
+function LoginForm({ onLogin }: { onLogin: (password: string) => Promise<boolean> }) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-    onLogin(password);
+    setLoading(true);
+    const success = await onLogin(password);
+    if (!success) {
+      setError("Invalid password");
+    }
+    setLoading(false);
   };
 
   return (
@@ -43,8 +49,8 @@ function LoginForm({ onLogin }: { onLogin: (password: string) => void }) {
             autoFocus
           />
           {error && <p className="text-red-500 text-sm">{error}</p>}
-          <Button type="submit" className="w-full">
-            Login
+          <Button type="submit" className="w-full" disabled={loading}>
+            {loading ? "Logging in..." : "Login"}
           </Button>
         </form>
       </Card>
@@ -65,18 +71,22 @@ export default function AdminLayout({
     setIsAuthenticated(auth === "true");
   }, []);
 
-  const handleLogin = async (password: string) => {
-    const res = await fetch("/api/admin/auth", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ password }),
-    });
+  const handleLogin = async (password: string): Promise<boolean> => {
+    try {
+      const res = await fetch("/api/admin/auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password }),
+      });
 
-    if (res.ok) {
-      localStorage.setItem("woodly-admin-auth", "true");
-      setIsAuthenticated(true);
-    } else {
-      alert("Invalid password");
+      if (res.ok) {
+        localStorage.setItem("woodly-admin-auth", "true");
+        setIsAuthenticated(true);
+        return true;
+      }
+      return false;
+    } catch {
+      return false;
     }
   };
 

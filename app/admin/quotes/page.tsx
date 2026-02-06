@@ -7,6 +7,16 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { PlusIcon, DownloadIcon, TrashIcon } from "lucide-react";
 
+type QuoteListItem = {
+  id: string;
+  quoteNumber: string;
+  status: string;
+  title?: string;
+  total: string;
+  createdAt: string;
+  customer?: { name: string };
+};
+
 const statusColors: Record<string, string> = {
   DRAFT: "bg-gray-100 text-gray-700",
   SENT: "bg-blue-100 text-blue-700",
@@ -16,7 +26,7 @@ const statusColors: Record<string, string> = {
 };
 
 export default function QuotesPage() {
-  const [quotes, setQuotes] = useState<any[]>([]);
+  const [quotes, setQuotes] = useState<QuoteListItem[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

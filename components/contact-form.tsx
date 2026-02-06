@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Loader2Icon } from "lucide-react";
 
 export function ContactForm() {
   const [formState, setFormState] = useState({
@@ -13,11 +14,36 @@ export function ContactForm() {
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement form submission
-    setSubmitted(true);
+    setLoading(true);
+    setError(null);
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formState),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "Something went wrong");
+      }
+
+      setSubmitted(true);
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Failed to send message. Please try again."
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChange = (
@@ -39,9 +65,22 @@ export function ContactForm() {
         </div>
         <h3 className="text-xl font-bold mb-2">Message Sent!</h3>
         <p className="text-muted-foreground mb-6">
-          Thanks for reaching out. We'll get back to you soon.
+          Thanks for reaching out. We&apos;ll get back to you within 1-2 business
+          days.
         </p>
-        <Button variant="outline" onClick={() => setSubmitted(false)}>
+        <Button
+          variant="outline"
+          onClick={() => {
+            setSubmitted(false);
+            setFormState({
+              name: "",
+              email: "",
+              phone: "",
+              projectType: "standard",
+              message: "",
+            });
+          }}
+        >
           Send Another Message
         </Button>
       </Card>
@@ -50,6 +89,12 @@ export function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      {error && (
+        <div className="p-4 rounded-md bg-red-50 border border-red-200 text-red-700 text-sm">
+          {error}
+        </div>
+      )}
+
       <div className="grid sm:grid-cols-2 gap-4">
         <div>
           <label htmlFor="name" className="block text-sm font-medium mb-2">
@@ -133,8 +178,15 @@ export function ContactForm() {
         />
       </div>
 
-      <Button type="submit" size="lg" className="w-full">
-        Send Message
+      <Button type="submit" size="lg" className="w-full" disabled={loading}>
+        {loading ? (
+          <>
+            <Loader2Icon className="w-4 h-4 mr-2 animate-spin" />
+            Sending...
+          </>
+        ) : (
+          "Send Message"
+        )}
       </Button>
     </form>
   );

@@ -10,7 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { CheckCircleIcon } from "lucide-react";
+import { CheckCircleIcon, Loader2Icon } from "lucide-react";
 
 interface InquiryModalProps {
   productId: string;
@@ -21,6 +21,8 @@ interface InquiryModalProps {
 export function InquiryModal({ productId, productName, children }: InquiryModalProps) {
   const [open, setOpen] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [formState, setFormState] = useState({
     name: "",
     email: "",
@@ -28,11 +30,33 @@ export function InquiryModal({ productId, productName, children }: InquiryModalP
     message: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement form submission (e.g., send to API, email service)
-    console.log("Inquiry submitted:", { productId, productName, ...formState });
-    setSubmitted(true);
+    setLoading(true);
+    setError(null);
+
+    try {
+      const res = await fetch("/api/inquiries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ productId, productName, ...formState }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "Something went wrong");
+      }
+
+      setSubmitted(true);
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Failed to send inquiry. Please try again."
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChange = (
@@ -47,9 +71,9 @@ export function InquiryModal({ productId, productName, children }: InquiryModalP
   const handleOpenChange = (newOpen: boolean) => {
     setOpen(newOpen);
     if (!newOpen) {
-      // Reset form when closing
       setTimeout(() => {
         setSubmitted(false);
+        setError(null);
         setFormState({ name: "", email: "", phone: "", message: "" });
       }, 200);
     }
@@ -67,7 +91,7 @@ export function InquiryModal({ productId, productName, children }: InquiryModalP
             <DialogHeader>
               <DialogTitle className="text-center">Message Sent!</DialogTitle>
               <DialogDescription className="text-center">
-                Thanks for your interest in the {productName}. We'll get back to
+                Thanks for your interest in the {productName}. We&apos;ll get back to
                 you within 1-2 business days.
               </DialogDescription>
             </DialogHeader>
@@ -81,17 +105,22 @@ export function InquiryModal({ productId, productName, children }: InquiryModalP
               <DialogTitle>Inquire About This Post</DialogTitle>
               <DialogDescription>
                 Interested in the <strong>{productName}</strong>? Fill out the form
-                below and we'll reach out to discuss details and delivery.
+                below and we&apos;ll reach out to discuss details and delivery.
               </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4 mt-4">
+              {error && (
+                <div className="p-3 rounded-md bg-red-50 border border-red-200 text-red-700 text-sm">
+                  {error}
+                </div>
+              )}
               <div>
-                <label htmlFor="name" className="block text-sm font-medium mb-1">
+                <label htmlFor="inquiry-name" className="block text-sm font-medium mb-1">
                   Name *
                 </label>
                 <input
                   type="text"
-                  id="name"
+                  id="inquiry-name"
                   name="name"
                   required
                   value={formState.name}
@@ -101,12 +130,12 @@ export function InquiryModal({ productId, productName, children }: InquiryModalP
                 />
               </div>
               <div>
-                <label htmlFor="email" className="block text-sm font-medium mb-1">
+                <label htmlFor="inquiry-email" className="block text-sm font-medium mb-1">
                   Email *
                 </label>
                 <input
                   type="email"
-                  id="email"
+                  id="inquiry-email"
                   name="email"
                   required
                   value={formState.email}
@@ -116,12 +145,12 @@ export function InquiryModal({ productId, productName, children }: InquiryModalP
                 />
               </div>
               <div>
-                <label htmlFor="phone" className="block text-sm font-medium mb-1">
+                <label htmlFor="inquiry-phone" className="block text-sm font-medium mb-1">
                   Phone
                 </label>
                 <input
                   type="tel"
-                  id="phone"
+                  id="inquiry-phone"
                   name="phone"
                   value={formState.phone}
                   onChange={handleChange}
@@ -130,11 +159,11 @@ export function InquiryModal({ productId, productName, children }: InquiryModalP
                 />
               </div>
               <div>
-                <label htmlFor="message" className="block text-sm font-medium mb-1">
+                <label htmlFor="inquiry-message" className="block text-sm font-medium mb-1">
                   Message
                 </label>
                 <textarea
-                  id="message"
+                  id="inquiry-message"
                   name="message"
                   rows={3}
                   value={formState.message}
@@ -143,8 +172,15 @@ export function InquiryModal({ productId, productName, children }: InquiryModalP
                   placeholder="Any questions about this post? Let us know your location for delivery estimates."
                 />
               </div>
-              <Button type="submit" className="w-full">
-                Send Inquiry
+              <Button type="submit" className="w-full" disabled={loading}>
+                {loading ? (
+                  <>
+                    <Loader2Icon className="w-4 h-4 mr-2 animate-spin" />
+                    Sending...
+                  </>
+                ) : (
+                  "Send Inquiry"
+                )}
               </Button>
             </form>
           </>

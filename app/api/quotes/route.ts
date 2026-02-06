@@ -1,42 +1,102 @@
-import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
+import { NextResponse } from "next/server";
+import { prisma } from "@/lib/db";
 
-const prisma = new PrismaClient();
+function generateQuoteNumber(): string {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const random = Math.floor(Math.random() * 10000)
+    .toString()
+    .padStart(4, "0");
+  return `WC-${year}${month}-${random}`;
+}
 
-// Create a quote
 export async function POST(request: Request) {
-  const { customerId, total, lineItems } = await request.json();
-  const quote = await prisma.quote.create({
-    data: { customerId, total, lineItems: {
-      create: lineItems // array of line items
-    } },
-  });
-  return NextResponse.json(quote);
+  try {
+    const body = await request.json();
+    const { customerId, title, description, notes, validUntil, lineItems } =
+      body;
+
+    if (!customerId) {
+      return NextResponse.json(
+        { error: "Customer is required" },
+        { status: 400 }
+      );
+    }
+
+    const subtotal =
+      lineItems?.reduce(
+        (sum: number, item: { unitPrice: number; quantity: number }) =>
+          sum + item.unitPrice * (item.quantity || 1),
+        0
+      ) ?? 0;
+    const tax = body.tax ?? 0;
+    const total = subtotal + tax;
+
+    const quote = await prisma.quote.create({
+      data: {
+        quoteNumber: generateQuoteNumber(),
+        customerId,
+        title,
+        description,
+        notes,
+        subtotal,
+        tax,
+        total,
+        validUntil: validUntil ? new Date(validUntil) : null,
+        lineItems: lineItems
+          ? {
+              create: lineItems.map(
+                (
+                  item: {
+                    description: string;
+                    quantity: number;
+                    unitPrice: number;
+                    total: number;
+                  },
+                  index: number
+                ) => ({
+                  description: item.description,
+                  quantity: item.quantity || 1,
+                  unitPrice: item.unitPrice,
+                  total: item.total || item.unitPrice * (item.quantity || 1),
+                  sortOrder: index,
+                })
+              ),
+            }
+          : undefined,
+      },
+      include: {
+        customer: true,
+        lineItems: { orderBy: { sortOrder: "asc" } },
+      },
+    });
+
+    return NextResponse.json(quote, { status: 201 });
+  } catch (error) {
+    console.error("Error creating quote:", error);
+    return NextResponse.json(
+      { error: "Failed to create quote" },
+      { status: 500 }
+    );
+  }
 }
 
-// Get all quotes
 export async function GET() {
-  const quotes = await prisma.quote.findMany({include: { lineItems: true }});
-  return NextResponse.json(quotes);
-}
-
-// Update a quote
-export async function PUT(request: Request) {
-  const { id, total, lineItems } = await request.json();
-  const quote = await prisma.quote.update({
-    where: { id },
-    data: { total, lineItems: {
-      create: lineItems // replace with new line items
-    } },
-  });
-  return NextResponse.json(quote);
-}
-
-// Delete a quote
-export async function DELETE(request: Request) {
-  const { id } = await request.json();
-  await prisma.quote.delete({
-    where: { id },
-  });
-  return NextResponse.json({ message: `Quote ${id} deleted` });
+  try {
+    const quotes = await prisma.quote.findMany({
+      include: {
+        customer: true,
+        lineItems: { orderBy: { sortOrder: "asc" } },
+      },
+      orderBy: { createdAt: "desc" },
+    });
+    return NextResponse.json(quotes);
+  } catch (error) {
+    console.error("Error fetching quotes:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch quotes" },
+      { status: 500 }
+    );
+  }
 }

@@ -6,13 +6,21 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FileTextIcon, UsersIcon, PlusIcon } from "lucide-react";
 
+type QuoteSummary = {
+  id: string;
+  quoteNumber: string;
+  status: string;
+  total: string;
+  customer?: { name: string };
+};
+
 type Stats = {
   totalQuotes: number;
   totalCustomers: number;
   draftQuotes: number;
   sentQuotes: number;
   acceptedQuotes: number;
-  recentQuotes: any[];
+  recentQuotes: QuoteSummary[];
 };
 
 export default function AdminDashboard() {
@@ -32,9 +40,9 @@ export default function AdminDashboard() {
         setStats({
           totalQuotes: quotes.length,
           totalCustomers: customers.length,
-          draftQuotes: quotes.filter((q: any) => q.status === "DRAFT").length,
-          sentQuotes: quotes.filter((q: any) => q.status === "SENT").length,
-          acceptedQuotes: quotes.filter((q: any) => q.status === "ACCEPTED").length,
+          draftQuotes: quotes.filter((q: QuoteSummary) => q.status === "DRAFT").length,
+          sentQuotes: quotes.filter((q: QuoteSummary) => q.status === "SENT").length,
+          acceptedQuotes: quotes.filter((q: QuoteSummary) => q.status === "ACCEPTED").length,
           recentQuotes: quotes.slice(0, 5),
         });
       } catch (error) {
@@ -125,7 +133,7 @@ export default function AdminDashboard() {
         </div>
         {stats?.recentQuotes && stats.recentQuotes.length > 0 ? (
           <div className="space-y-3">
-            {stats.recentQuotes.map((quote: any) => (
+            {stats.recentQuotes.map((quote) => (
               <Link
                 key={quote.id}
                 href={`/admin/quotes/${quote.id}`}

@@ -1,38 +1,52 @@
-import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
+import { NextResponse } from "next/server";
+import { prisma } from "@/lib/db";
 
-const prisma = new PrismaClient();
-
-// Create a customer
 export async function POST(request: Request) {
-  const { name, email } = await request.json();
-  const customer = await prisma.customer.create({
-    data: { name, email },
-  });
-  return NextResponse.json(customer);
+  try {
+    const body = await request.json();
+    const { name, email, phone, address, city, state, zip, notes } = body;
+
+    if (!name) {
+      return NextResponse.json(
+        { error: "Customer name is required" },
+        { status: 400 }
+      );
+    }
+
+    const customer = await prisma.customer.create({
+      data: {
+        name,
+        email: email || null,
+        phone: phone || null,
+        address: address || null,
+        city: city || null,
+        state: state || null,
+        zip: zip || null,
+        notes: notes || null,
+      },
+    });
+
+    return NextResponse.json(customer, { status: 201 });
+  } catch (error) {
+    console.error("Error creating customer:", error);
+    return NextResponse.json(
+      { error: "Failed to create customer" },
+      { status: 500 }
+    );
+  }
 }
 
-// Get all customers
 export async function GET() {
-  const customers = await prisma.customer.findMany();
-  return NextResponse.json(customers);
-}
-
-// Update a customer
-export async function PUT(request: Request) {
-  const { id, name, email } = await request.json();
-  const customer = await prisma.customer.update({
-    where: { id },
-    data: { name, email },
-  });
-  return NextResponse.json(customer);
-}
-
-// Delete a customer
-export async function DELETE(request: Request) {
-  const { id } = await request.json();
-  await prisma.customer.delete({
-    where: { id },
-  });
-  return NextResponse.json({ message: `Customer ${id} deleted` });
+  try {
+    const customers = await prisma.customer.findMany({
+      orderBy: { createdAt: "desc" },
+    });
+    return NextResponse.json(customers);
+  } catch (error) {
+    console.error("Error fetching customers:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch customers" },
+      { status: 500 }
+    );
+  }
 }

@@ -18,8 +18,9 @@ type LineItem = {
 
 export default function NewQuotePage() {
   const router = useRouter();
-  const [customers, setCustomers] = useState<any[]>([]);
+  const [customers, setCustomers] = useState<{ id: string; name: string; email?: string }[]>([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [form, setForm] = useState({
     customerId: "",
     title: "",
@@ -41,7 +42,7 @@ export default function NewQuotePage() {
   const tax = subtotal * 0; // No tax for now, can be configured
   const total = subtotal + tax;
 
-  function updateLineItem(index: number, field: keyof LineItem, value: any) {
+  function updateLineItem(index: number, field: keyof LineItem, value: string | number) {
     const updated = [...lineItems];
     updated[index] = { ...updated[index], [field]: value };
     if (field === "quantity" || field === "unitPrice") {
@@ -63,12 +64,14 @@ export default function NewQuotePage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    setError(null);
+
     if (!form.customerId) {
-      alert("Please select a customer");
+      setError("Please select a customer");
       return;
     }
     if (lineItems.length === 0 || !lineItems[0].description) {
-      alert("Please add at least one line item");
+      setError("Please add at least one line item");
       return;
     }
 
@@ -90,11 +93,11 @@ export default function NewQuotePage() {
         const quote = await res.json();
         router.push(`/admin/quotes/${quote.id}`);
       } else {
-        alert("Error creating quote");
+        const data = await res.json();
+        setError(data.error || "Error creating quote");
       }
-    } catch (error) {
-      console.error("Error:", error);
-      alert("Error creating quote");
+    } catch {
+      setError("Error creating quote. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -105,6 +108,12 @@ export default function NewQuotePage() {
       <h1 className="text-3xl font-bold">New Quote</h1>
 
       <form onSubmit={handleSubmit} className="space-y-6">
+        {error && (
+          <div className="p-4 rounded-md bg-red-50 border border-red-200 text-red-700 text-sm">
+            {error}
+          </div>
+        )}
+
         {/* Customer Selection */}
         <Card className="p-6">
           <h2 className="text-lg font-semibold mb-4">Customer</h2>

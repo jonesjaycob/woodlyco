@@ -1,13 +1,9 @@
-import { defineConfig } from "@prisma/sdk";
+import path from "node:path";
+import { defineConfig } from "@prisma/config";
 
 export default defineConfig({
+  schema: path.join("prisma", "schema.prisma"),
   datasource: {
-    // This is the connection string for your database
-    url: process.env.DATABASE_URL,
-    provider: "postgresql",
-  },
-  generator: {
-    provider: "prisma-client-js",
-    output: "./prisma/generated", // Output path for the Prisma client
+    url: process.env.DATABASE_URL ?? "postgresql://localhost:5432/woodlyco",
   },
 });

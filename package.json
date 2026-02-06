@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@prisma/client": "^7.3.0",
+    "@prisma/sdk": "^3.15.2",
     "@radix-ui/react-navigation-menu": "^1.2.14",
     "@radix-ui/react-separator": "^1.1.8",
     "@radix-ui/react-slot": "^1.2.4",

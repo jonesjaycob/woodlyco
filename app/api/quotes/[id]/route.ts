@@ -56,7 +56,7 @@ export async function PUT(
         notes: body.notes,
         lineItems: body.lineItems
           ? {
-              create: body.lineItems.map((item: any, index: number) => ({
+              create: body.lineItems.map((item: { description: string; quantity: number; unitPrice: number; total: number }, index: number) => ({
                 description: item.description,
                 quantity: item.quantity || 1,
                 unitPrice: item.unitPrice,

@@ -6,32 +6,77 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+}
+
+enum QuoteStatus {
+  DRAFT
+  SENT
+  ACCEPTED
+  DECLINED
+  EXPIRED
 }
 
 model Customer {
-  id        Int     @id @default(autoincrement())
+  id        String   @id @default(cuid())
   name      String
-  email     String  @unique
+  email     String?
+  phone     String?
+  address   String?
+  city      String?
+  state     String?
+  zip       String?
+  notes     String?
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   quotes    Quote[]
 }
 
 model Quote {
-  id        Int      @id @default(autoincrement())
-  customer  Customer? @relation(fields: [customerId], references: [id])
-  customerId Int?
-  total     Float
-  date      DateTime @default(now())
-  lineItems LineItem[]
+  id          String      @id @default(cuid())
+  quoteNumber String      @unique
+  customerId  String
+  customer    Customer    @relation(fields: [customerId], references: [id])
+  status      QuoteStatus @default(DRAFT)
+  title       String?
+  description String?
+  subtotal    Decimal     @default(0) @db.Decimal(10, 2)
+  tax         Decimal     @default(0) @db.Decimal(10, 2)
+  total       Decimal     @default(0) @db.Decimal(10, 2)
+  validUntil  DateTime?
+  notes       String?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  lineItems   LineItem[]
 }
 
 model LineItem {
-  id       Int    @id @default(autoincrement())
-  quote    Quote? @relation(fields: [quoteId], references: [id])
-  quoteId  Int?
+  id          String  @id @default(cuid())
+  quoteId     String
+  quote       Quote   @relation(fields: [quoteId], references: [id], onDelete: Cascade)
   description String
-  amount   Float
-  quantity Int
-  total    Float @computed("amount * quantity")
+  quantity    Int     @default(1)
+  unitPrice   Decimal @db.Decimal(10, 2)
+  total       Decimal @db.Decimal(10, 2)
+  sortOrder   Int     @default(0)
+}
+
+model ContactSubmission {
+  id          String   @id @default(cuid())
+  name        String
+  email       String
+  phone       String?
+  projectType String   @default("standard")
+  message     String
+  createdAt   DateTime @default(now())
+}
+
+model Inquiry {
+  id          String   @id @default(cuid())
+  productId   String
+  productName String
+  name        String
+  email       String
+  phone       String?
+  message     String?
+  createdAt   DateTime @default(now())
 }

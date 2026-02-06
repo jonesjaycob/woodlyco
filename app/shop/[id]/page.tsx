@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { NavigationMenuMain } from "@/components/navbar";
 import { Section } from "@/components/ui/section";
@@ -193,10 +194,11 @@ export default async function ProductPage({
               >
                 <Card className="overflow-hidden">
                   <div className="relative aspect-square bg-muted">
-                    <img
+                    <Image
                       src={relatedItem.images[0]}
                       alt={relatedItem.name}
-                      className="object-cover w-full h-full group-hover:scale-105 transition-transform"
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform"
                     />
                     {relatedItem.status === "sold" && (
                       <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
