@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -10,6 +10,7 @@ import {
   LayoutDashboardIcon,
   FileTextIcon,
   UsersIcon,
+  MailIcon,
   LogOutIcon,
 } from "lucide-react";
 
@@ -17,6 +18,7 @@ const navItems = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboardIcon },
   { href: "/admin/quotes", label: "Quotes", icon: FileTextIcon },
   { href: "/admin/customers", label: "Customers", icon: UsersIcon },
+  { href: "/admin/messages", label: "Messages", icon: MailIcon },
 ];
 
 function LoginForm({ onLogin }: { onLogin: (password: string) => Promise<boolean> }) {
@@ -63,13 +65,11 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(() => {
+    if (typeof window === "undefined") return null;
+    return localStorage.getItem("woodly-admin-auth") === "true";
+  });
   const pathname = usePathname();
-
-  useEffect(() => {
-    const auth = localStorage.getItem("woodly-admin-auth");
-    setIsAuthenticated(auth === "true");
-  }, []);
 
   const handleLogin = async (password: string): Promise<boolean> => {
     try {
@@ -120,7 +120,15 @@ export default function AdminLayout({
               {navItems.map((item) => (
                 <Link key={item.href} href={item.href}>
                   <Button
-                    variant={pathname === item.href ? "secondary" : "ghost"}
+                    variant={
+                      item.href === "/admin"
+                        ? pathname === "/admin"
+                          ? "secondary"
+                          : "ghost"
+                        : pathname.startsWith(item.href)
+                          ? "secondary"
+                          : "ghost"
+                    }
                     size="sm"
                     className="gap-2"
                   >

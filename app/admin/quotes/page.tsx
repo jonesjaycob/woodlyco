@@ -56,7 +56,33 @@ export default function QuotesPage() {
   }
 
   if (loading) {
-    return <div className="animate-pulse">Loading quotes...</div>;
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <div className="h-9 w-32 bg-muted animate-pulse rounded" />
+          <div className="h-10 w-32 bg-muted animate-pulse rounded" />
+        </div>
+        <Card className="overflow-hidden">
+          <div className="bg-muted p-4">
+            <div className="flex gap-4">
+              {[...Array(7)].map((_, i) => (
+                <div key={i} className="h-4 w-20 bg-muted-foreground/10 animate-pulse rounded" />
+              ))}
+            </div>
+          </div>
+          {[...Array(5)].map((_, i) => (
+            <div key={i} className="flex items-center gap-4 p-4 border-t">
+              <div className="h-5 w-24 bg-muted animate-pulse rounded" />
+              <div className="h-5 w-32 bg-muted animate-pulse rounded" />
+              <div className="h-5 w-40 bg-muted animate-pulse rounded" />
+              <div className="h-5 w-20 bg-muted animate-pulse rounded" />
+              <div className="h-5 w-16 bg-muted animate-pulse rounded" />
+              <div className="h-5 w-24 bg-muted animate-pulse rounded" />
+            </div>
+          ))}
+        </Card>
+      </div>
+    );
   }
 
   return (

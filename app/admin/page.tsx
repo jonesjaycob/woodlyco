@@ -55,7 +55,39 @@ export default function AdminDashboard() {
   }, []);
 
   if (loading) {
-    return <div className="animate-pulse">Loading dashboard...</div>;
+    return (
+      <div className="space-y-8">
+        <div className="flex items-center justify-between">
+          <div className="h-9 w-40 bg-muted animate-pulse rounded" />
+          <div className="h-10 w-32 bg-muted animate-pulse rounded" />
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {[...Array(4)].map((_, i) => (
+            <Card key={i} className="p-6">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-muted animate-pulse rounded-lg" />
+                <div className="space-y-2">
+                  <div className="h-7 w-12 bg-muted animate-pulse rounded" />
+                  <div className="h-4 w-20 bg-muted animate-pulse rounded" />
+                </div>
+              </div>
+            </Card>
+          ))}
+        </div>
+        <Card className="p-6">
+          <div className="h-6 w-32 bg-muted animate-pulse rounded mb-4" />
+          {[...Array(3)].map((_, i) => (
+            <div key={i} className="flex items-center justify-between p-3">
+              <div className="space-y-1">
+                <div className="h-5 w-28 bg-muted animate-pulse rounded" />
+                <div className="h-4 w-36 bg-muted animate-pulse rounded" />
+              </div>
+              <div className="h-5 w-16 bg-muted animate-pulse rounded" />
+            </div>
+          ))}
+        </Card>
+      </div>
+    );
   }
 
   return (
